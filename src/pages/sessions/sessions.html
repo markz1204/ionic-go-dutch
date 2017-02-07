@@ -1,0 +1,29 @@
+<!--
+  Generated template for the Sessions page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Sessions</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card *ngFor="let session of sessions" (click)="goToSession(session)">
+    <ion-card-header>
+      {{session.name}}
+    </ion-card-header>
+    <ion-card-content>
+      There are {{session.members.length}} members
+    </ion-card-content>
+    <ion-item-divider>
+      Duration: {{session.startTime}} - {{session.endTime}}
+    </ion-item-divider>
+  </ion-card>
+
+</ion-content>

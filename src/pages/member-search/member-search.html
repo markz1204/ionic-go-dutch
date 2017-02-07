@@ -1,0 +1,31 @@
+<!--
+  Generated template for the MemberSearch page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle (click)="goBack()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </button>
+    <ion-searchbar (ionInput)="getMembers($event)"></ion-searchbar>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <ion-item *ngFor="let member of members">
+      <ion-avatar item-left>
+        <img src="{{member.image}}">
+      </ion-avatar>
+      <h2>{{member.firstName}}</h2>
+
+      <button ion-button clear item-right *ngIf="!isAlreadyInSession(member)" (click)="addToSession(member)">Add</button>
+      <ion-badge *ngIf="isAlreadyInSession(member)" item-right>Already in this session</ion-badge>
+    </ion-item>
+  </ion-list>
+</ion-content>

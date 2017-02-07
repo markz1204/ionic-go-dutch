@@ -1,0 +1,72 @@
+<!--
+  Generated template for the Session page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>session</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="presentOptions($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list inset>
+    <ion-card>
+      <ion-card-content>
+        <ion-card-title>
+          {{session.name}}
+        </ion-card-title>
+        <p>
+          The most popular industrial group ever, and largely
+          responsible for bringing the music to a mass audience.
+        </p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <p>Cost for this session</p>
+      </ion-card-header>
+      <ion-card-content>
+          <ion-item>
+            <ion-input [disabled]="costInputDisabled()" type="number" [(ngModel)]="costAmount" [placeholder]="placeholderForCostInput()"></ion-input>
+          </ion-item>
+          <ion-row wrap end>
+            <ion-item>
+              <ion-segment [(ngModel)]="costType" (ionChange)="segmentChanged()">
+                <ion-segment-button *ngFor="let segment of segmentItems" value="{{segment.value}}">
+                  {{segment.name}}
+                </ion-segment-button>
+              </ion-segment>
+            </ion-item>
+          </ion-row>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-list inset>
+        <ion-card-header>
+          <p>Currently, {{session.members.length}} members joined this session</p>
+        </ion-card-header>
+        <ion-item *ngFor="let member of session.members">
+          <ion-avatar item-left>
+            <img src="{{member.image}}">
+          </ion-avatar>
+          <p>{{member.firstName}}</p>
+          <ion-checkbox item-right></ion-checkbox>
+        </ion-item>
+      </ion-list>
+    </ion-card>
+  </ion-list>
+
+</ion-content>

@@ -1,19 +1,29 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
+import { SchedulePage } from '../pages/schedule/schedule';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
 import {AuthService} from '../providers/auth-service'
+import {ScheduleService} from "../providers/schedule-service";
+import {SessionsPage} from "../pages/sessions/sessions";
+import {SessionPage} from "../pages/session/session";
+import {OptionsPage} from "../pages/options/options";
+import {MemberSearchPage} from "../pages/member-search/member-search";
+import {UserService} from "../providers/user-service";
 
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
     LoginPage,
-    RegisterPage,  
+    RegisterPage,
+    SchedulePage,
+    SessionsPage,
+    SessionPage,
+    OptionsPage,
+    MemberSearchPage,
     TabsPage
   ],
   imports: [
@@ -24,9 +34,16 @@ import {AuthService} from '../providers/auth-service'
     MyApp,
     LoginPage,
     RegisterPage,
-    HomePage,
+    SchedulePage,
+    SessionsPage,
+    SessionPage,
+    OptionsPage,
+    MemberSearchPage,
     TabsPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AuthService]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
+              AuthService,
+              ScheduleService,
+              UserService]
 })
 export class AppModule {}

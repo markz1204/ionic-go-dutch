@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Schedule
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-card *ngFor="let schedule of schedules" (click)="goToSessions(schedule)">
+    <ion-card-header>
+      {{schedule.name}}
+    </ion-card-header>
+    <ion-card-content>
+      There are {{schedule.sessions.length}} sessions
+    </ion-card-content>
+    <ion-item-divider>
+      Created on {{schedule.created}}
+    </ion-item-divider>
+  </ion-card>
+
+</ion-content>

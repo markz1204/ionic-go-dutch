@@ -1,12 +1,15 @@
+import {Session} from "./session.model";
 export class User {
   email: string;
   token: string;
   username: string;
+  firstName: string;
+  lastName: string;
   bio: string;
   image: string;
-    
-    
-    constructor(email: string){
-        this.email = email;
-    }
+  sessions: Session[] = [];
+
+  constructor(email: string) {
+    this.email = email;
+  }
 }
