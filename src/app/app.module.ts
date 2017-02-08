@@ -12,6 +12,9 @@ import {SessionPage} from "../pages/session/session";
 import {OptionsPage} from "../pages/options/options";
 import {MemberSearchPage} from "../pages/member-search/member-search";
 import {UserService} from "../providers/user-service";
+import {SessionCostService} from "../providers/session-cost-service";
+import {MemberCostService} from "../providers/member-cost-service";
+import {SessionCreatePage} from "../pages/session-create/session-create";
 
 
 @NgModule({
@@ -23,6 +26,7 @@ import {UserService} from "../providers/user-service";
     SessionsPage,
     SessionPage,
     OptionsPage,
+    SessionCreatePage,
     MemberSearchPage,
     TabsPage
   ],
@@ -38,12 +42,15 @@ import {UserService} from "../providers/user-service";
     SessionsPage,
     SessionPage,
     OptionsPage,
+    SessionCreatePage,
     MemberSearchPage,
     TabsPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
               AuthService,
               ScheduleService,
-              UserService]
+              UserService,
+              SessionCostService,
+              MemberCostService]
 })
 export class AppModule {}

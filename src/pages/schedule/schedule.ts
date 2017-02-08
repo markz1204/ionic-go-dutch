@@ -5,6 +5,7 @@ import { LoginPage } from '../login/login';
 import {Schedule} from "../../models/schedule.model";
 import {ScheduleService} from "../../providers/schedule-service";
 import {SessionsPage} from "../sessions/sessions";
+import {SessionCreatePage} from "../session-create/session-create";
 
 @Component({
   selector: 'page-schedule',
@@ -20,6 +21,10 @@ export class SchedulePage {
 
   goToSessions(schedule: any) {
     this.navCtrl.push(SessionsPage, schedule);
+  }
+
+  createSession(){
+    this.navCtrl.push(SessionCreatePage);
   }
 
   public logout() {

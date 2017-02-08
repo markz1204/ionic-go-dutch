@@ -8,6 +8,7 @@ export class User {
   bio: string;
   image: string;
   sessions: Session[] = [];
+  costExcluded: Session[] = [];
 
   constructor(email: string) {
     this.email = email;

@@ -1,12 +1,17 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
+    <ion-title text-center>
       Schedule
     </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="createSession()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding class="no-scroll">
 
   <ion-card *ngFor="let schedule of schedules" (click)="goToSessions(schedule)">
     <ion-card-header>
