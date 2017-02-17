@@ -1,5 +1,5 @@
-import {Component, ViewChild, ElementRef} from '@angular/core';
-import {NavController, NavParams, PopoverController} from 'ionic-angular';
+import {Component} from "@angular/core";
+import {NavController, NavParams, PopoverController} from "ionic-angular";
 import {Session} from "../../models/session.model";
 import {OptionsPage} from "../options/options";
 import {CostType} from "../../enums/CostType.enum";

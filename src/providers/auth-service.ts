@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {User} from '../models/user.model';
+import {UserService} from "./user-service";
+import {JwtService} from "./jwt-service";
+import {BehaviorSubject, ReplaySubject} from "rxjs";
 
 /*
   Generated class for the AuthService provider.
@@ -11,41 +14,86 @@ import {User} from '../models/user.model';
 @Injectable()
 export class AuthService {
 
-  currentUser: User;
- 
-  public login(credentials) {
+  currentUserSubject = new BehaviorSubject<User>(new User());
+  currentUser = this.currentUserSubject.asObservable().distinctUntilChanged();
+
+  isAuthenticatedSubject = new ReplaySubject<boolean>(1);
+  isAuthenticated = this.isAuthenticatedSubject.asObservable();
+
+  constructor(private userService: UserService, private jwtService: JwtService){
+    this.isAuthenticatedSubject.next(false);
+  }
+
+  public login(credentials): Observable<boolean> {
     if (credentials.email === null || credentials.password === null) {
       return Observable.throw("Please insert credentials");
     } else {
-      return Observable.create(observer => {
-        // At this point make a request to your backend to make a real check!
-        let access = (credentials.password === "pass" && credentials.email === "email");
-        this.currentUser = new User('saimon@devdactic.com');
-        observer.next(access);
-        observer.complete();
-      });
+       return this.userService.getUser(credentials).map(
+         data => {
+          this.setAuth(data.user);
+          return true;
+         },
+
+          error =>{
+            return false;
+          }
+         );
     }
   }
- 
-  public register(credentials) {
-    if (credentials.email === null || credentials.password === null) {
+
+  public register(credentials) : Observable<User> {
+    if (credentials.username === null || credentials.email === null || credentials.password === null) {
       return Observable.throw("Please insert credentials");
     } else {
-      // At this point store the credentials to your backend!
-      return Observable.create(observer => {
-        observer.next(true);
-        observer.complete();
-      });
+      return this.userService.registerUser(credentials).map(
+        data =>{
+          this.setAuth(data.user);
+          return data.user;
+        }
+      );
     }
   }
- 
+
+  setAuth(user: User) {
+    // Save JWT sent from server in localstorage
+    this.jwtService.saveToken(user.token);
+
+    this.currentUserSubject.next(user);
+
+    this.isAuthenticatedSubject.next(true);
+  }
+
+
   public getUserInfo() : User {
-    return this.currentUser;
+    return this.currentUserSubject.value;
   }
- 
+
+  populate() {
+    // If JWT detected, attempt to get & store user's info
+    if (this.jwtService.getToken()) {
+      this.userService.getCurrentUser()
+        .subscribe(
+          data => this.setAuth(data.user),
+          err => this.purgeAuth()
+        );
+    } else {
+      // Remove any potential remnants of previous auth states
+      this.purgeAuth();
+    }
+  }
+
+  purgeAuth() {
+    // Remove JWT from localstorage
+    this.jwtService.destroyToken();
+    // Set current user to an empty object
+    this.currentUserSubject.next(new User());
+    // Set auth status to false
+    this.isAuthenticatedSubject.next(false);
+  }
+
   public logout() {
     return Observable.create(observer => {
-      this.currentUser = null;
+      this.purgeAuth();
       observer.next(true);
       observer.complete();
     });

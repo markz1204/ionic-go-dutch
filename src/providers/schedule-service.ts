@@ -73,7 +73,7 @@ export class ScheduleService {
     session.members = [];
 
     for (var i = 0; i < count; i++) {
-      let user = new User('test1@gmail.com'),
+      let user = new User(),
         imgUrl = Math.floor(Math.random() * imgs.length);
       user.image = imgs[imgUrl];
       user.firstName = user.image.substring(user.image.lastIndexOf('-') + 1, user.image.lastIndexOf('.'));

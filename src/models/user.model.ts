@@ -9,8 +9,4 @@ export class User {
   image: string;
   sessions: Session[] = [];
   costExcluded: Session[] = [];
-
-  constructor(email: string) {
-    this.email = email;
-  }
 }

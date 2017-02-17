@@ -15,6 +15,8 @@ import {UserService} from "../providers/user-service";
 import {SessionCostService} from "../providers/session-cost-service";
 import {MemberCostService} from "../providers/member-cost-service";
 import {SessionCreatePage} from "../pages/session-create/session-create";
+import {JwtService} from "../providers/jwt-service";
+import {ProfilePage} from "../pages/profile/profile";
 
 
 @NgModule({
@@ -28,7 +30,8 @@ import {SessionCreatePage} from "../pages/session-create/session-create";
     OptionsPage,
     SessionCreatePage,
     MemberSearchPage,
-    TabsPage
+    TabsPage,
+    ProfilePage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -44,13 +47,15 @@ import {SessionCreatePage} from "../pages/session-create/session-create";
     OptionsPage,
     SessionCreatePage,
     MemberSearchPage,
-    TabsPage
+    TabsPage,
+    ProfilePage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
               AuthService,
               ScheduleService,
               UserService,
               SessionCostService,
-              MemberCostService]
+              MemberCostService,
+              JwtService]
 })
 export class AppModule {}

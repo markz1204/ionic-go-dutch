@@ -1,7 +1,10 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Schedule} from '../models/schedule.model';
+import {Injectable} from "@angular/core";
 import {User} from "../models/user.model";
+import {JwtService} from "./jwt-service";
+import {Http, Headers} from "@angular/http";
+import {Observable} from "rxjs/Rx";
+import "rxjs/add/operator/map";
+import "rxjs/add/operator/catch";
 
 /*
  Generated class for the AuthService provider.
@@ -22,10 +25,10 @@ export class UserService {
   "https://ionicframework.com/dist/preview-app/www/assets/img/avatar-ben.png",
   "https://ionicframework.com/dist/preview-app/www/assets/img/avatar-leia.png"];
 
-  constructor() {
+  constructor(private http: Http, private jwtService: JwtService) {
     const count = Math.floor((Math.random() * 100) + 1);
     for (var i = 0; i < count; i++) {
-      let user = new User('test1@gmail.com'),
+      let user = new User(),
         imgUrl = Math.floor(Math.random() * this.imgs.length);
       user.image = this.imgs[imgUrl];
       user.firstName = user.image.substring(user.image.lastIndexOf('-') + 1, user.image.lastIndexOf('.'));
@@ -42,6 +45,35 @@ export class UserService {
     }else{
       return this.users;
     }
+  }
+
+  registerUser(credentials: any) : Observable<any>{
+    return this.http.post('api/users', JSON.stringify({user: credentials}),{headers: this.setHeaders()}).catch(this.formatErrors)
+      .map(res => res.json());
+  }
+
+  getCurrentUser() : Observable<any>{
+    return this.http.post('/api/user', {headers: this.setHeaders()}).map(res=>res.json());
+  }
+
+  getUser(credentials): Observable<any>{
+    return this.http.post('/api/users/login', JSON.stringify({user: credentials}),{headers: this.setHeaders()}).catch(this.formatErrors).map(res=>res.json());
+  }
+
+  private setHeaders(): Headers {
+    let headersConfig = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+
+    if (this.jwtService.getToken()) {
+      headersConfig['Authorization'] = `Token ${this.jwtService.getToken()}`;
+    }
+    return new Headers(headersConfig);
+  }
+
+  private formatErrors(error: any) {
+    return Observable.throw(error.json());
   }
 
 }
