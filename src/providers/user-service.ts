@@ -1,10 +1,9 @@
 import {Injectable} from "@angular/core";
 import {User} from "../models/user.model";
-import {JwtService} from "./jwt-service";
-import {Http, Headers} from "@angular/http";
 import {Observable} from "rxjs/Rx";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
+import {ApiService} from "./api-service";
 
 /*
  Generated class for the AuthService provider.
@@ -17,24 +16,7 @@ export class UserService {
 
   users: User[] = [];
 
-  imgs: string[] = ["https://ionicframework.com/dist/preview-app/www/assets/img/avatar-han.png",
-  "https://ionicframework.com/dist/preview-app/www/assets/img/avatar-finn.png",
-  "https://ionicframework.com/dist/preview-app/www/assets/img/avatar-rey.png",
-  "https://ionicframework.com/dist/preview-app/www/assets/img/avatar-luke.png",
-  "https://ionicframework.com/dist/preview-app/www/assets/img/avatar-poe.png",
-  "https://ionicframework.com/dist/preview-app/www/assets/img/avatar-ben.png",
-  "https://ionicframework.com/dist/preview-app/www/assets/img/avatar-leia.png"];
-
-  constructor(private http: Http, private jwtService: JwtService) {
-    const count = Math.floor((Math.random() * 100) + 1);
-    for (var i = 0; i < count; i++) {
-      let user = new User(),
-        imgUrl = Math.floor(Math.random() * this.imgs.length);
-      user.image = this.imgs[imgUrl];
-      user.firstName = user.image.substring(user.image.lastIndexOf('-') + 1, user.image.lastIndexOf('.'));
-      this.users.push(user);
-    }
-  }
+  constructor(private apiService: ApiService) {}
 
 
   query(q: string) {
@@ -48,32 +30,14 @@ export class UserService {
   }
 
   registerUser(credentials: any) : Observable<any>{
-    return this.http.post('api/users', JSON.stringify({user: credentials}),{headers: this.setHeaders()}).catch(this.formatErrors)
-      .map(res => res.json());
+    return this.apiService.post('/users', {user: credentials});
   }
 
   getCurrentUser() : Observable<any>{
-    return this.http.post('/api/user', {headers: this.setHeaders()}).map(res=>res.json());
+    return this.apiService.get('/user');
   }
 
   getUser(credentials): Observable<any>{
-    return this.http.post('/api/users/login', JSON.stringify({user: credentials}),{headers: this.setHeaders()}).catch(this.formatErrors).map(res=>res.json());
+    return this.apiService.post('/users/login', {user: credentials});
   }
-
-  private setHeaders(): Headers {
-    let headersConfig = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    };
-
-    if (this.jwtService.getToken()) {
-      headersConfig['Authorization'] = `Token ${this.jwtService.getToken()}`;
-    }
-    return new Headers(headersConfig);
-  }
-
-  private formatErrors(error: any) {
-    return Observable.throw(error.json());
-  }
-
 }

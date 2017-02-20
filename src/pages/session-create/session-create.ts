@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
-import {Validators, FormBuilder, FormGroup, AbstractControl} from '@angular/forms';
-import {NavController, NavParams, ViewController} from 'ionic-angular';
+import {Component} from "@angular/core";
+import {Validators, FormBuilder, FormGroup, AbstractControl} from "@angular/forms";
+import {NavParams, ViewController} from "ionic-angular";
 import {CostType} from "../../enums/CostType.enum";
 import {NumberValidator} from "../../validators/number-validator";
+import {SessionService} from "../../providers/session-service";
+import {ScheduleService} from "../../providers/schedule-service";
 
 /*
   Generated class for the SessionCreate page.
@@ -23,7 +25,10 @@ export class SessionCreatePage {
   session: FormGroup;
   costAmount: AbstractControl;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, private formBuilder: FormBuilder) {
+  serverErrors = {};
+
+  constructor(private viewCtrl: ViewController, private formBuilder: FormBuilder, private sessionService: SessionService, private scheduleService: ScheduleService, private navParams: NavParams) {
+
     this.session = this.formBuilder.group({
       title: ['', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(25)])],
       costType: ['', Validators.required],
@@ -48,7 +53,41 @@ export class SessionCreatePage {
   }
 
   createSession(){
-    console.log(this.session.value);
+    if(this.session.valid) {
+
+      let newSession = Object.assign({}, this.session.value);
+
+      this.sessionService.create(newSession).subscribe(data=>{
+
+        if(this.navParams.data.schedule){
+
+          this.scheduleService.update(this.navParams.data.schedule, {sessions: [data.session.id]}).subscribe(
+
+            error=>{
+              console.log(error);
+            },
+
+            ()=>{
+              this.viewCtrl.dismiss();
+            }
+          );
+
+        }else {
+          let newSchedule = Object.assign({}, {title: this.session.value.title, sessions:[data.session.id]});
+
+          this.scheduleService.create(newSchedule).subscribe(
+            () => {
+              this.viewCtrl.dismiss();
+            }
+          );
+        }
+      },
+
+      error=>{
+        this.serverErrors = Object.assign({}, error);
+      }
+      );
+    }
   }
 
 }

@@ -16,7 +16,14 @@ export class SchedulePage {
   schedules: Schedule[];
 
   constructor(private navCtrl: NavController, private auth: AuthService, private scheduleService: ScheduleService) {
-    this.schedules = scheduleService.query();
+
+    this.auth.currentUser.subscribe((user)=>{
+      if(user && user.username) {
+        scheduleService.query(user.username).subscribe((results) => {
+          this.schedules = results.schedules;
+        });
+      }
+    });
   }
 
   goToSessions(schedule: any) {

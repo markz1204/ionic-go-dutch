@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {Platform} from "ionic-angular";
 import {StatusBar, Splashscreen} from "ionic-native";
 import {TabsPage} from "../pages/tabs/tabs";
@@ -9,20 +9,26 @@ import {AuthService} from "../providers/auth-service";
 @Component({
   templateUrl: 'app.html'
 })
-export class MyApp {
+export class MyApp implements OnInit{
+
   rootPage: any;
+
+
+  ngOnInit(): void {
+
+    this.authService.populate();
+
+    this.authService.isAuthenticated.subscribe((isAuthenticated)=>{
+      if(isAuthenticated){
+        this.rootPage = TabsPage;
+      }else{
+        this.rootPage = LoginPage;
+      }
+    });
+  }
 
   constructor(platform: Platform, public authService: AuthService) {
     platform.ready().then(() => {
-
-      authService.isAuthenticated.subscribe((isAuthenticated)=>{
-        if(isAuthenticated){
-          this.rootPage = TabsPage;
-        }else{
-          this.rootPage = LoginPage;
-        }
-      });
-
 
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.

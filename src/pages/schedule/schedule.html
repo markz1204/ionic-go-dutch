@@ -15,13 +15,13 @@
 
   <ion-card *ngFor="let schedule of schedules" (click)="goToSessions(schedule)">
     <ion-card-header>
-      {{schedule.name}}
+      {{schedule.title}}
     </ion-card-header>
     <ion-card-content>
       There are {{schedule.sessions.length}} sessions
     </ion-card-content>
     <ion-item-divider>
-      Created on {{schedule.created}}
+      Created on {{schedule.createdAt | amDateFormat:'LL'}}
     </ion-item-divider>
   </ion-card>
 

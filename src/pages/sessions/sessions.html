@@ -11,7 +11,7 @@
       Sessions
     </ion-title>
     <ion-buttons end>
-      <button ion-button icon-only>
+      <button ion-button icon-only (click)="createSession()">
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
@@ -23,13 +23,13 @@
 <ion-content padding class="no-scroll">
   <ion-card *ngFor="let session of sessions" (click)="goToSession(session)">
     <ion-card-header>
-      {{session.name}}
+      {{session.title}}
     </ion-card-header>
     <ion-card-content>
       There are {{session.members.length}} members
     </ion-card-content>
     <ion-item-divider>
-      Duration: {{session.startTime}} - {{session.endTime}}
+      Duration: {{session.startTime | amDateFormat:'HH:mm'}} - {{session.endTime | amDateFormat:'HH:mm'}} on {{session.startTime | amDateFormat:'LL'}}
     </ion-item-divider>
   </ion-card>
 

@@ -1,11 +1,11 @@
-import { NgModule, ErrorHandler } from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { MyApp } from './app.component';
-import { SchedulePage } from '../pages/schedule/schedule';
-import { TabsPage } from '../pages/tabs/tabs';
-import { LoginPage } from '../pages/login/login';
-import { RegisterPage } from '../pages/register/register';
-import {AuthService} from '../providers/auth-service'
+import {NgModule, ErrorHandler} from "@angular/core";
+import {IonicApp, IonicModule, IonicErrorHandler} from "ionic-angular";
+import {MyApp} from "./app.component";
+import {SchedulePage} from "../pages/schedule/schedule";
+import {TabsPage} from "../pages/tabs/tabs";
+import {LoginPage} from "../pages/login/login";
+import {RegisterPage} from "../pages/register/register";
+import {AuthService} from "../providers/auth-service";
 import {ScheduleService} from "../providers/schedule-service";
 import {SessionsPage} from "../pages/sessions/sessions";
 import {SessionPage} from "../pages/session/session";
@@ -17,6 +17,9 @@ import {MemberCostService} from "../providers/member-cost-service";
 import {SessionCreatePage} from "../pages/session-create/session-create";
 import {JwtService} from "../providers/jwt-service";
 import {ProfilePage} from "../pages/profile/profile";
+import {SessionService} from "../providers/session-service";
+import {ApiService} from "../providers/api-service";
+import {MomentModule} from 'angular2-moment';
 
 
 @NgModule({
@@ -34,6 +37,7 @@ import {ProfilePage} from "../pages/profile/profile";
     ProfilePage
   ],
   imports: [
+    MomentModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
@@ -56,6 +60,8 @@ import {ProfilePage} from "../pages/profile/profile";
               UserService,
               SessionCostService,
               MemberCostService,
-              JwtService]
+              JwtService,
+              SessionService,
+              ApiService]
 })
 export class AppModule {}

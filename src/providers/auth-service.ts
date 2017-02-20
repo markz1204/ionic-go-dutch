@@ -20,9 +20,7 @@ export class AuthService {
   isAuthenticatedSubject = new ReplaySubject<boolean>(1);
   isAuthenticated = this.isAuthenticatedSubject.asObservable();
 
-  constructor(private userService: UserService, private jwtService: JwtService){
-    this.isAuthenticatedSubject.next(false);
-  }
+  constructor(private userService: UserService, private jwtService: JwtService){}
 
   public login(credentials): Observable<boolean> {
     if (credentials.email === null || credentials.password === null) {

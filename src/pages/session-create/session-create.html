@@ -22,6 +22,9 @@
         <ion-label fixed>Title</ion-label>
         <ion-input type="text" formControlName="title"></ion-input>
       </ion-item>
+      <ion-item *ngIf="serverErrors.errors && serverErrors.errors.title">
+        <p>Title {{serverErrors.errors && serverErrors.errors.title}}</p>
+      </ion-item>
       <ion-item>
         <ion-label>Cost type</ion-label>
         <ion-select [(ngModel)]="costType" formControlName="costType">
