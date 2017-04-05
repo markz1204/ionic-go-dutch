@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {Component} from "@angular/core";
+import {NavController} from "ionic-angular";
 import {User} from "../../models/user.model";
 import {UserService} from "../../providers/user-service";
 import {Session} from "../../models/session.model";
+import {SessionService} from "../../providers/session-service";
 
 /*
   Generated class for the MemberSearch page.
@@ -20,27 +21,33 @@ export class MemberSearchPage {
 
   currentSession: Session;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private userService: UserService) {
-    this.currentSession = this.navParams.get('session');
+  constructor(public navCtrl: NavController, private userService: UserService, private sessionService: SessionService) {
+
+    this.sessionService.currentSession.subscribe((session)=>{
+      this.currentSession = session;
+    })
   }
 
   getMembers(ev: any){
 
     let q = ev.target.value;
 
-    this.members = this.userService.query(q);
+    this.userService.query(q).subscribe(results=>{
+      this.members = results;
+    });
   }
 
   isAlreadyInSession(member){
-    return member.sessions.find((m)=>{
-      return m = this.currentSession;
-    })
+    return this.currentSession.members.find((m)=>{
+      return m.email === member.email;
+    });
   }
 
   addToSession(member: User){
-    //add this member to session in db
-    this.currentSession.members.push(member);
-    member.sessions.push(this.currentSession);
+
+    this.sessionService.update(this.currentSession.slug, member).subscribe(updated=>{
+      this.sessionService.currentSessionSubject.next(updated);
+    });
   }
 
   goBack(){

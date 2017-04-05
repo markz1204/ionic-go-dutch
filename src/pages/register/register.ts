@@ -22,7 +22,7 @@ export class RegisterPage{
 
   constructor(private navCtrl: NavController, private auth: AuthService, private formBuilder: FormBuilder) {
     this.registerForm = formBuilder.group({
-      username: [''],
+      //username: [''],
       email: [''],
       password: ['']
     });

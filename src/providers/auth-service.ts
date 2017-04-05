@@ -26,7 +26,7 @@ export class AuthService {
     if (credentials.email === null || credentials.password === null) {
       return Observable.throw("Please insert credentials");
     } else {
-       return this.userService.getUser(credentials).map(
+       return this.userService.login(credentials).map(
          data => {
           this.setAuth(data.user);
           return true;

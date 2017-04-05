@@ -1,9 +1,7 @@
 import {Component} from "@angular/core";
-import {SchedulePage} from "../schedule/schedule";
 import {ProfilePage} from "../profile/profile";
-import {AuthService} from "../../providers/auth-service";
 import {App} from "ionic-angular";
-import {LoginPage} from "../login/login";
+import {SessionsPage} from "../sessions/sessions";
 
 @Component({
   templateUrl: 'tabs.html'
@@ -11,10 +9,10 @@ import {LoginPage} from "../login/login";
 export class TabsPage {
   // this tells the tabs component which Pages
   // should be each tab's root Page
-  scheduleRoot: any = SchedulePage;
+  sessionsRoot: any = SessionsPage;
   profileRoot: any = ProfilePage;
 
-  constructor(appCtrl: App, authService: AuthService) {
+  constructor(appCtrl: App) {
 
   }
 }

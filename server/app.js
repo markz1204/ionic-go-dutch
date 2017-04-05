@@ -6,7 +6,6 @@ var fs = require('fs'),
   bodyParser = require('body-parser'),
   session = require('express-session'),
   cors = require('cors'),
-  passport = require('passport'),
   errorhandler = require('errorhandler'),
   mongoose = require('mongoose');
 
@@ -40,8 +39,6 @@ if(isProduction){
 
 require('./models/User');
 require('./models/Session');
-require('./models/Schedule');
-require('./config/passport');
 
 app.use(require('./routes'));
 

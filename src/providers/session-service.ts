@@ -1,5 +1,7 @@
 import {Injectable} from "@angular/core";
 import {ApiService} from "./api-service";
+import {BehaviorSubject, ReplaySubject} from "rxjs";
+import {Session} from "../models/session.model";
 
 /*
  Generated class for the AuthService provider.
@@ -9,6 +11,10 @@ import {ApiService} from "./api-service";
  */
 @Injectable()
 export class SessionService {
+
+
+  currentSessionSubject = new ReplaySubject<Session>(1);
+  currentSession = this.currentSessionSubject.asObservable();
 
 
   constructor(private apiService: ApiService){
@@ -29,5 +35,17 @@ export class SessionService {
     let convertedSessionDetails = Object.assign({}, sessionDetails, {startTime: startDateTime.toISOString(), endTime: endDateTime.toISOString()});
 
     return this.apiService.post('/sessions', {session: convertedSessionDetails});
+  }
+
+  getAll(){
+    return this.apiService.get(`/sessions`).map(data=>data.sessions);
+  }
+
+  getSession(slug){
+    return this.apiService.get(`/sessions/${slug}`).map(data=>data.session);
+  }
+
+  update(slug, additionals){
+    return this.apiService.patch(`/sessions/${slug}`, {member: additionals}).map(data=>data.session);
   }
 }

@@ -1,5 +1,6 @@
 import {Session} from "./session.model";
 export class User {
+  id: string;
   email: string;
   token: string;
   username: string;
@@ -8,5 +9,4 @@ export class User {
   bio: string;
   image: string;
   sessions: Session[] = [];
-  costExcluded: Session[] = [];
 }

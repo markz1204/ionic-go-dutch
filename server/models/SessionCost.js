@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
 var SessionCostSchema = new mongoose.Schema({
   session: {type: mongoose.Schema.Types.ObjectId, ref:'Session'},
-  costType: Number,
+  member: {type: mongoose.Schema.Types.ObjectId, ref:'User'},
   costAmount: Number
 }, {timestamps: true});
 

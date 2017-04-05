@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import {Component} from "@angular/core";
+import {NavController} from "ionic-angular";
 import {Session} from "../../models/session.model";
 import {SessionPage} from "../session/session";
-import {ScheduleService} from "../../providers/schedule-service";
 import {SessionCreatePage} from "../session-create/session-create";
-import {Schedule} from "../../models/schedule.model";
+import {SessionService} from "../../providers/session-service";
 
 /*
   Generated class for the Sessions page.
@@ -18,21 +17,31 @@ import {Schedule} from "../../models/schedule.model";
 })
 export class SessionsPage {
 
-  sessions: Session[] = [];
+  sessions: Session[];
 
-  constructor(public navCtrl: NavController, private scheduleService: ScheduleService, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, private sessionService: SessionService) {
+  }
 
-    scheduleService.getAllSessions(navParams.data.slug).subscribe(data=>{
+  ionViewWillEnter(){
+    this.sessionService.getAll().subscribe(data=>{
       this.sessions = data;
     });
   }
 
   createSession(){
-    this.navCtrl.push(SessionCreatePage, {schedule: this.navParams.data.slug});
+    this.navCtrl.push(SessionCreatePage);
   }
 
-  goToSession(session: Session){
-    this.navCtrl.push(SessionPage, session);
+  goToSession(session){
+
+    this.sessionService.getSession(session.slug).subscribe(
+      session => {
+
+        this.sessionService.currentSessionSubject.next(session);
+
+        this.navCtrl.push(SessionPage);
+
+      });
   }
 
 }

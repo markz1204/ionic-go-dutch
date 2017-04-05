@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {NavController, NavParams, ViewController} from 'ionic-angular';
+import {Component} from "@angular/core";
+import {NavController, ViewController} from "ionic-angular";
 import {MemberSearchPage} from "../member-search/member-search";
 
 /*
@@ -14,13 +14,13 @@ import {MemberSearchPage} from "../member-search/member-search";
 })
 export class OptionsPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, private viewCtrl: ViewController) {
   }
 
   goToMemberSearch(){
     this.viewCtrl.dismiss();
 
-    this.navCtrl.push(MemberSearchPage, this.navParams.data);
+    this.navCtrl.push(MemberSearchPage);
   }
 
   close(){

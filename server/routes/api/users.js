@@ -1,45 +1,87 @@
 var mongoose = require('mongoose');
 var router = require('express').Router();
-var passport = require('passport');
 var User = mongoose.model('User');
 var auth = require('../auth');
+var request = require("request");
+var jwt = require('jsonwebtoken');
 
-router.get('/user', auth.required, function(req, res, next){
-  User.findById(req.payload.id).then(function(user){
+router.post('/signup', function(req, res, next){
+
+  var email = req.body.user.email,
+      password = req.body.user.password,
+      firstName = req.body.user.firstName,
+      lastName = req.body.user.lastName;
+
+  var signupOptions = { method: 'POST',
+    url: 'https://dreamingmonkey.au.auth0.com/dbconnections/signup',
+    headers: { 'content-type': 'application/json' },
+    body:
+      { client_id: 'TbHzK1zgP9mMH8qvoEWCN87HglMeZNxp',
+        email: email,
+        password: password,
+        connection: 'Username-Password-Authentication',
+        user_metadata: { firstName: firstName, lastName: lastName } },
+    json: true };
+
+  var loginOptions = {
+    method: 'POST',
+    url: 'https://dreamingmonkey.au.auth0.com/oauth/ro',
+    headers: { 'content-type': 'application/json' },
+    body: {
+      client_id: 'TbHzK1zgP9mMH8qvoEWCN87HglMeZNxp',
+      username: email,
+      password: password,
+      connection: 'Username-Password-Authentication',
+      scope: 'openid profile'
+    },
+    json: true
+  };
+
+  return request(signupOptions, function (error, response, body) {
+
+    if (200 === response.statusCode){
+
+      var user = new User();
+      user.email = email;
+      user.firstName = firstName;
+      user.lastName = lastName;
+
+      return request(loginOptions, function (error, response, body) {
+
+        if (200 === response.statusCode) {
+
+          var token = jwt.decode(body.id_token);
+          user.picture = token.picture;
+
+          user.save().then(function(){
+            return res.json({user: user.toAuthJSON(body.id_token)});
+          }).catch(next);
+        }else{
+          return res.sendStatus(401);
+        }
+      });
+    }else{
+      if(400 === response.statusCode){
+        return res.json(body);
+      }else {
+        return res.sendStatus(401);
+      }
+    }
+  });
+});
+
+router.get('/current', auth.required, function(req, res, next){
+
+  var token = jwt.decode(auth.getTokenFromHeader(req));
+
+  return User.findOne({email: token.email}).then(function(user){
     if(!user){ return res.sendStatus(401); }
 
-    return res.json({user: user.toAuthJSON()});
+    return res.json({user: user.toAuthJSON(auth.getTokenFromHeader(req))});
   }).catch(next);
 });
 
-router.put('/user', auth.required, function(req, res, next){
-  User.findById(req.payload.id).then(function(user){
-    if(!user){ return res.sendStatus(401); }
-
-    // only update fields that were actually passed...
-    if(typeof req.body.user.username !== 'undefined'){
-      user.username = req.body.user.username;
-    }
-    if(typeof req.body.user.email !== 'undefined'){
-      user.email = req.body.user.email;
-    }
-    if(typeof req.body.user.bio !== 'undefined'){
-      user.bio = req.body.user.bio;
-    }
-    if(typeof req.body.user.image !== 'undefined'){
-      user.image = req.body.user.image;
-    }
-    if(typeof req.body.user.password !== 'undefined'){
-      user.setPassword(req.body.user.password);
-    }
-
-    return user.save().then(function(){
-      return res.json({user: user.toAuthJSON()});
-    });
-  }).catch(next);
-});
-
-router.post('/users/login', function(req, res, next){
+router.post('/login', function(req, res, next){
   if(!req.body.user.email){
     return res.status(422).json({errors: {email: "can't be blank"}});
   }
@@ -48,28 +90,60 @@ router.post('/users/login', function(req, res, next){
     return res.status(422).json({errors: {password: "can't be blank"}});
   }
 
-  passport.authenticate('local', {session: false}, function(err, user, info){
-    if(err){ return next(err); }
 
-    if(user){
-      user.token = user.generateJWT();
-      return res.json({user: user.toAuthJSON()});
-    } else {
-      return res.status(422).json(info);
+  var loginOptions = {
+    method: 'POST',
+    url: 'https://dreamingmonkey.au.auth0.com/oauth/ro',
+    headers: { 'content-type': 'application/json' },
+    body: {
+      client_id: 'TbHzK1zgP9mMH8qvoEWCN87HglMeZNxp',
+      username: req.body.user.email,
+      password: req.body.user.password,
+      connection: 'Username-Password-Authentication',
+      scope: 'openid email'
+    },
+    json: true
+  };
+
+  return request(loginOptions, function (error, response, body) {
+    if (200 === response.statusCode) {
+      User.findOne({email: req.body.user.email}).then(function(user){
+        return res.json({user: user.toAuthJSON(body.id_token)});
+      }).catch(next);
+    }else{
+      return res.sendStatus(401);
     }
-  })(req, res, next);
+  });
 });
 
-router.post('/users', function(req, res, next){
-  var user = new User();
+router.get('/', auth.required, function(req, res){
 
-  user.username = req.body.user.username;
-  user.email = req.body.user.email;
-  user.setPassword(req.body.user.password);
+  if(req.query.q) {
 
-  user.save().then(function(){
-    return res.json({user: user.toAuthJSON()});
-  }).catch(next);
+    return User.find({email: new RegExp(req.query.q, 'i')}).then(function (users) {
+      return res.json({
+        users: users.map(function (user) {
+          return user.toProfileJSON();
+        })
+      })
+    });
+  }else{
+    return res.json({users: []});
+  }
+});
+
+router.patch('/', auth.required, function(req, res, next){
+
+  var token = jwt.decode(auth.getTokenFromHeader(req));
+
+  return User.findOne({email: token.email}).then(function (user) {
+
+    Object.assign(user, req.body.user);
+
+    user.save().then(function(updated){
+      return res.json({user: updated.toProfileJSON()});
+    });
+  });
 });
 
 module.exports = router;

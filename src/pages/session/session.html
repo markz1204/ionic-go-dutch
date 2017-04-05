@@ -27,18 +27,7 @@
         <p>Cost for this session</p>
       </ion-card-header>
       <ion-card-content>
-
-        <ion-item>
-          <ion-label>$</ion-label>
-          <ion-input [disabled]="costInputDisabled()" type="number" [(ngModel)]="sessionCost" [placeholder]="placeholderForCostInput()"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-segment [(ngModel)]="costType" (ionChange)="segmentChanged()">
-            <ion-segment-button *ngFor="let segment of segmentItems" value="{{segment.value}}">
-              {{segment.name}}
-            </ion-segment-button>
-          </ion-segment>
-        </ion-item>
+        Awating development ....
       </ion-card-content>
     </ion-card>
 
@@ -47,18 +36,18 @@
         <ion-card-header>
           <p>{{session.members.length}} members in this session</p>
         </ion-card-header>
-        <ion-item *ngFor="let member of session.members">
+        <ion-grid>
+          <ion-row>
+            <ion-item *ngFor="let member of session.members">
 
-          <ion-avatar item-left>
-            <img src="{{member.image}}">
-            <ion-label style="font-size: x-small">{{member.firstName}} - ${{initialCost(member)}}</ion-label>
+              <ion-avatar item-left>
+                <img src="{{member.picture}}">
+                <ion-label style="font-size: x-small">{{member.firstName}} - $0.00</ion-label>
 
-          </ion-avatar>
-
-          <button ion-button clear item-right (click)="excludeOrInclude(member)">
-                {{excludeIncludedLabel(member)}}
-          </button>
-        </ion-item>
+              </ion-avatar>
+            </ion-item>
+          </ion-row>
+        </ion-grid>
       </ion-list>
     </ion-card>
   </ion-list>
