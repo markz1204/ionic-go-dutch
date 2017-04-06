@@ -1,7 +1,8 @@
 import {User} from "./user.model";
 export class Session {
   id: string;
-  name: string;
+  title: string;
+  description: string;
   slug: string;
   startTime: string;
   endTime: string;

@@ -5,7 +5,7 @@ export class MemberCost {
   session: Session;
   costAmount: number;
 
-  constructor(member: User, session: Session, costAmount: number){
+  constructor(session: Session, member: User, costAmount: number){
     this.member = member;
     this.session = session;
     this.costAmount = costAmount;

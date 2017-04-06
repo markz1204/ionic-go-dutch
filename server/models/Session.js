@@ -28,8 +28,10 @@ SessionSchema.methods.slugify = function() {
 
 SessionSchema.methods.toJSONForCreation = function(){
   return {
+    id: this._id,
     organiser: this.organiser.toProfileJSON(),
     title: this.title,
+    costType: this.costType,
     slug: this.slug,
     startTime: this.startTime,
     endTime: this.endTime
@@ -38,8 +40,10 @@ SessionSchema.methods.toJSONForCreation = function(){
 
 SessionSchema.methods.toJSONForDetails = function(){
   return {
+    id: this._id,
     organiser: this.organiser.toProfileJSON(),
     title: this.title,
+    costType: this.costType,
     slug: this.slug,
     startTime: this.startTime,
     endTime: this.endTime,

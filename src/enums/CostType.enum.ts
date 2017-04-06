@@ -1,5 +1,5 @@
 export enum CostType{
-  AVERAGE,
+  EQUAL,
   TOTAL,
   ARBITRARY
 }

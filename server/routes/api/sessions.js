@@ -1,11 +1,22 @@
 var mongoose = require('mongoose');
 var router = require('express').Router();
-var passport = require('passport');
 var Session = mongoose.model('Session');
 var User = mongoose.model('User');
+var MemberCost = mongoose.model('MemberCost');
+
 var jwt = require('jsonwebtoken');
 
 var auth = require('../auth');
+
+var _createMemberCost = function(user, session) {
+  //Create corresponding member cost.
+  var memberCost = new MemberCost();
+  memberCost.member = user;
+  memberCost.session = session;
+  memberCost.costAmount = 0;
+
+  memberCost.save();
+};
 
 router.post('/', auth.required, function(req, res, next) {
 
@@ -16,14 +27,18 @@ router.post('/', auth.required, function(req, res, next) {
     if (!user) { return res.sendStatus(401); }
 
     var session = new Session(req.body.session);
+        session.costType = 0;
 
     session.organiser = user;
     session.members.push(user);
 
     return session.save().then(function(){
 
+      //Add session to user.
       user.sessions.push(session);
       user.save();
+
+      _createMemberCost(user, session);
 
       return res.json({session: session.toJSONForCreation()});
     });
@@ -74,7 +89,7 @@ router.get('/:session', auth.required, function(req, res) {
   }
 });
 
-router.patch('/:session', auth.required, function(req, res) {
+router.patch('/:session/members', auth.required, function(req, res) {
   if(req.sessionObj){
 
     User.findOne({email: req.body.member.email}).then(function(user){
@@ -85,9 +100,27 @@ router.patch('/:session', auth.required, function(req, res) {
           .populate('organiser')
           .populate({path: 'members', model: 'User'})
           .exec(function(err, session){
+
+            _createMemberCost(user, session);
+
             return res.json({"session": session.toJSONForDetails()});
           });
       }
+    });
+  }else{
+    return res.json({"session:":[]});
+  }
+});
+
+router.patch('/:session', auth.required, function(req, res) {
+  if(req.sessionObj){
+
+    if(req.body.costType.toString().length > 0){
+      req.sessionObj.costType = req.body.costType;
+    }
+
+    req.sessionObj.save().then(function(session){
+      return res.json({"session": session.toJSONForDetails()});
     });
   }else{
     return res.json({"session:":[]});

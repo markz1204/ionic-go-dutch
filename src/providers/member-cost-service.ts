@@ -1,7 +1,8 @@
-import {Injectable} from '@angular/core';
+import {Injectable} from "@angular/core";
 import {MemberCost} from "../models/member-cost.model";
 import {Session} from "../models/session.model";
-import {User} from "../models/user.model";
+import {ApiService} from "./api-service";
+import {Observable} from "rxjs";
 
 /*
  Generated class for the AuthService provider.
@@ -14,28 +15,15 @@ export class MemberCostService {
 
   memberCosts: MemberCost[] = [];
 
-  constructor() {
+  constructor(private apiService: ApiService) {
   }
 
-  createOrUpdate(member: User, session:Session, costAmount: number) : MemberCost{
-
-    let cost = this.query(member, session);
-    if(cost){
-      cost.costAmount = costAmount;
-    }else {
-      cost = new MemberCost(member, session, costAmount);
-      this.memberCosts.push(cost);
-    }
-
-    return cost;
+  get(session:Session) : Observable<any>{
+    return this.apiService.get(`/member-costs/${session.slug}`).map(data=>data.memberCosts);
   }
 
-  query(member: User, session:Session) : MemberCost {
-    const cost =  this.memberCosts.find((cost) => {
-      return cost.member === member && cost.session === session;
-    });
-
-    return cost;
+  createOrUpdate(session: Session, memberCosts: MemberCost[]) : Observable<any>{
+    return this.apiService.post(`/member-costs/${session.slug}`, {memberCosts: memberCosts}).map(data=>data.memberCosts);
   }
 
 }

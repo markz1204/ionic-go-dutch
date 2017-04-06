@@ -29,7 +29,7 @@
       There are {{session.members.length}} members
     </ion-card-content>
     <ion-item-divider>
-      Duration: {{session.startTime | amDateFormat:'HH:mm'}} - {{session.endTime | amDateFormat:'HH:mm'}} on {{session.startTime | amDateFormat:'LL'}}
+      <ion-label class="small-font">Duration: {{session.startTime | amDateFormat:'HH:mm'}} - {{session.endTime | amDateFormat:'HH:mm'}} on {{session.startTime | amDateFormat:'LL'}}</ion-label>
     </ion-item-divider>
   </ion-card>
 

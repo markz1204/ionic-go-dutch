@@ -39,6 +39,8 @@ if(isProduction){
 
 require('./models/User');
 require('./models/Session');
+require('./models/MemberCost');
+
 
 app.use(require('./routes'));
 

@@ -45,7 +45,11 @@ export class SessionService {
     return this.apiService.get(`/sessions/${slug}`).map(data=>data.session);
   }
 
-  update(slug, additionals){
-    return this.apiService.patch(`/sessions/${slug}`, {member: additionals}).map(data=>data.session);
+  addMember(slug, additionals){
+    return this.apiService.patch(`/sessions/${slug}/members`, {member: additionals}).map(data=>data.session);
+  }
+
+  updateCostType(slug, costType){
+    return this.apiService.patch(`/sessions/${slug}`, {costType: costType}).map(data=>data.session);
   }
 }

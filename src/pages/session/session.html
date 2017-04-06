@@ -20,23 +20,23 @@
 
 <ion-content padding>
 
-  <ion-list inset>
+  <ion-list>
 
     <ion-card>
       <ion-card-header>
         <ion-row>
           <ion-col col-6>
             <ion-item>
-              <ion-label>{{costLabels[costType]}}</ion-label>
-              <ion-input type="number" [(ngModel)]="cost" (input)="costChanged($event.target.value)"></ion-input>
+              <ion-label class="small-font">{{costLabels[costType]}} $</ion-label>
+              <ion-input type="number" [readonly]="readyOnly()" [(ngModel)]="cost" (input)="costChanged($event.target.value)"></ion-input>
             </ion-item>
           </ion-col>
         </ion-row>
 
       </ion-card-header>
       <ion-card-content>
-        <div padding>
-          <ion-segment [(ngModel)]="costType" (ionChange)="segmentChanged()">
+        <div>
+          <ion-segment class="small-font" [(ngModel)]="costType" (ionChange)="segmentChanged()">
             <ion-segment-button *ngFor="let segment of segmentItems" value="{{segment.value}}">
               {{segment.name}}
             </ion-segment-button>
@@ -46,23 +46,23 @@
     </ion-card>
 
     <ion-card>
-      <ion-list inset>
-        <ion-card-header>
-          <p>{{session.members.length}} members attended this session</p>
-        </ion-card-header>
-        <ion-grid>
-          <ion-row>
-            <ion-item *ngFor="let member of session.members">
+      <ion-card-content>
+          <ion-card-header>
+            <ion-label class="small-font">{{memberCosts.length}} members attended</ion-label>
+          </ion-card-header>
 
-              <ion-avatar item-left>
-                <img src="{{member.picture}}">
-                <ion-label style="font-size: x-small">{{member.firstName}} - ${{costPerPerson}}</ion-label>
+            <ion-list>
+              <ion-item *ngFor="let memberCost of memberCosts" (click)="showCost(memberCost)">
+                <ion-avatar item-left>
+                  <img src="{{memberCost.member.picture}}">
+                </ion-avatar>
+                <ion-label class="small-font">{{memberCost.member.firstName}} {{memberCost.member.lastName}}</ion-label>
+                <ion-note item-right>${{memberCost.costAmount}}</ion-note>
 
-              </ion-avatar>
-            </ion-item>
-          </ion-row>
-        </ion-grid>
-      </ion-list>
+              </ion-item>
+            </ion-list>
+
+      </ion-card-content>
     </ion-card>
   </ion-list>
 
