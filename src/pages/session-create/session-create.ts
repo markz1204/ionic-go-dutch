@@ -1,8 +1,7 @@
 import {Component} from "@angular/core";
 import {Validators, FormBuilder, FormGroup} from "@angular/forms";
-import {NavParams, NavController} from "ionic-angular";
+import {NavController} from "ionic-angular";
 import {SessionService} from "../../providers/session-service";
-import {ScheduleService} from "../../providers/schedule-service";
 
 /*
  Generated class for the SessionCreate page.

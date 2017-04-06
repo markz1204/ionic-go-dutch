@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {ApiService} from "./api-service";
-import {BehaviorSubject, ReplaySubject} from "rxjs";
+import {ReplaySubject} from "rxjs";
 import {Session} from "../models/session.model";
 
 /*

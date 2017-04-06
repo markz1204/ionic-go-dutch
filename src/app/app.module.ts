@@ -6,7 +6,6 @@ import {TabsPage} from "../pages/tabs/tabs";
 import {LoginPage} from "../pages/login/login";
 import {RegisterPage} from "../pages/register/register";
 import {AuthService} from "../providers/auth-service";
-import {ScheduleService} from "../providers/schedule-service";
 import {SessionsPage} from "../pages/sessions/sessions";
 import {SessionPage} from "../pages/session/session";
 import {OptionsPage} from "../pages/options/options";
@@ -19,7 +18,7 @@ import {JwtService} from "../providers/jwt-service";
 import {ProfilePage} from "../pages/profile/profile";
 import {SessionService} from "../providers/session-service";
 import {ApiService} from "../providers/api-service";
-import {MomentModule} from 'angular2-moment';
+import {MomentModule} from "angular2-moment";
 
 
 @NgModule({
@@ -27,7 +26,6 @@ import {MomentModule} from 'angular2-moment';
     MyApp,
     LoginPage,
     RegisterPage,
-    SchedulePage,
     SessionsPage,
     SessionPage,
     OptionsPage,
@@ -45,7 +43,6 @@ import {MomentModule} from 'angular2-moment';
     MyApp,
     LoginPage,
     RegisterPage,
-    SchedulePage,
     SessionsPage,
     SessionPage,
     OptionsPage,
@@ -56,7 +53,6 @@ import {MomentModule} from 'angular2-moment';
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
               AuthService,
-              ScheduleService,
               UserService,
               SessionCostService,
               MemberCostService,

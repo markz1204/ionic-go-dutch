@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title text-center>{{session.name}}</ion-title>
+    <ion-title text-center>{{session.title}}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="presentOptions($event)">
         <ion-icon name="more"></ion-icon>
@@ -24,17 +24,31 @@
 
     <ion-card>
       <ion-card-header>
-        <p>Cost for this session</p>
+        <ion-row>
+          <ion-col col-6>
+            <ion-item>
+              <ion-label>{{costLabels[costType]}}</ion-label>
+              <ion-input type="number" [(ngModel)]="cost" (input)="costChanged($event.target.value)"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
       </ion-card-header>
       <ion-card-content>
-        Awating development ....
+        <div padding>
+          <ion-segment [(ngModel)]="costType" (ionChange)="segmentChanged()">
+            <ion-segment-button *ngFor="let segment of segmentItems" value="{{segment.value}}">
+              {{segment.name}}
+            </ion-segment-button>
+          </ion-segment>
+        </div>
       </ion-card-content>
     </ion-card>
 
     <ion-card>
       <ion-list inset>
         <ion-card-header>
-          <p>{{session.members.length}} members in this session</p>
+          <p>{{session.members.length}} members attended this session</p>
         </ion-card-header>
         <ion-grid>
           <ion-row>
@@ -42,7 +56,7 @@
 
               <ion-avatar item-left>
                 <img src="{{member.picture}}">
-                <ion-label style="font-size: x-small">{{member.firstName}} - $0.00</ion-label>
+                <ion-label style="font-size: x-small">{{member.firstName}} - ${{costPerPerson}}</ion-label>
 
               </ion-avatar>
             </ion-item>

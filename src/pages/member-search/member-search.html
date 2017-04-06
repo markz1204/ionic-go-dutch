@@ -25,7 +25,7 @@
       <h2>{{member.firstName}}</h2>
 
       <button ion-button clear item-right *ngIf="!isAlreadyInSession(member)" (click)="addToSession(member)">Add</button>
-      <ion-badge *ngIf="isAlreadyInSession(member)" item-right>Already in this session</ion-badge>
+      <ion-badge *ngIf="isAlreadyInSession(member)" item-right>Added</ion-badge>
     </ion-item>
   </ion-list>
 </ion-content>

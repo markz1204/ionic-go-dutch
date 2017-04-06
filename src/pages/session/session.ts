@@ -19,14 +19,29 @@ export class SessionPage {
 
   session: Session;
 
-  segmentItems: any[] = [{name: 'Average', value: CostType.AVERAGE}, {
-    name: 'Total',
-    value: CostType.TOTAL
-  }, {name: 'Arbitrary', value: CostType.ARBITRARY}];
+  costType: any;
+
+  cost: number;
+
+  costPerPerson: number;
+
+  costLabels: any[] = ['Cost per person: ', 'Cost in total (go-dutch): ', 'Cost in total (sum-up): '];
+
+  segmentItems: any[] = [
+    {name: 'Average', value: CostType.AVERAGE},
+    {name: 'Total', value: CostType.TOTAL},
+    {name: 'Arbitrary', value: CostType.ARBITRARY}];
 
   constructor(private popOverCtrl: PopoverController, private sessionService: SessionService) {
+
+    this.costType = "0";
+    this.cost = 0;
+
     this.sessionService.currentSession.subscribe((session)=>{
       this.session = session;
+
+      this.calculateCost();
+
     });
   }
 
@@ -41,4 +56,23 @@ export class SessionPage {
     popover.present({ev: event});
   }
 
+  segmentChanged(){
+    this.calculateCost();
+  }
+
+  costChanged(costVal){
+    this.cost = costVal;
+
+    this.calculateCost();
+  }
+
+  private calculateCost() {
+    if ("0" === this.costType) {
+      this.costPerPerson = this.cost;
+    } else if ("1" === this.costType) {
+      this.costPerPerson = Number((this.cost / this.session.members.length).toFixed(1));
+    } else {
+      this.costPerPerson = 0;
+    }
+  }
 }
