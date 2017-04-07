@@ -12,13 +12,13 @@ import {Session} from "../models/session.model";
 @Injectable()
 export class SessionService {
 
-
   currentSessionSubject = new ReplaySubject<Session>(1);
   currentSession = this.currentSessionSubject.asObservable();
 
+  isDirtySession: Boolean = false;
 
   constructor(private apiService: ApiService){
-
+    this.isDirtySession = false
   }
 
   create(sessionDetails){

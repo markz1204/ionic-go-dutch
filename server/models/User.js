@@ -11,16 +11,6 @@ var UserSchema = new mongoose.Schema({
 
 UserSchema.plugin(uniqueValidator, {message: 'is already taken.'});
 
-UserSchema.methods.toAuthJSON = function(token){
-  return {
-    email: this.email,
-    firstName: this.firstName,
-    lastName: this.lastName,
-    token: token
-  };
-};
-
-
 UserSchema.methods.toProfileJSON = function(){
   return {
     id: this._id,

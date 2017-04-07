@@ -5,6 +5,30 @@ var MemberCost = mongoose.model('MemberCost');
 
 var auth = require('../auth');
 
+router.post('/', auth.required, function(req, res, next){
+  var mc = req.body.memberCost;
+
+  var operation = req.body.operation;
+
+  if(mc && 'd' === operation){
+
+    var sObjId = mongoose.Types.ObjectId(mc.session.id),
+        mObjId = mongoose.Types.ObjectId(mc.member.id);
+
+    MemberCost.remove({member: mObjId, session: sObjId}).exec(function(err, docs){
+
+      Session.findOneAndUpdate({_id: sObjId}, {'$pull': {'members': mObjId}})
+        .populate('organiser')
+        .populate({path: 'members', model: 'User'})
+        .exec(function(err, session){
+          return res.json({"session": session.toJSONForDetails()});
+        });
+    });
+  }
+
+});
+
+
 router.param('session', function(req, res, next, slug) {
   Session.findOne({ slug: slug})
     .populate('organiser')

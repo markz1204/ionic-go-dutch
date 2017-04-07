@@ -38,6 +38,8 @@ export class OptionsPage {
 
   collect(){
 
+    this.sessionService.isDirtySession = false;
+
     let memberCosts = this.navParams.get("memberCosts");
     this.memberCostService.createOrUpdate(this.session, memberCosts).subscribe((memberCosts)=>{
 

@@ -26,4 +26,7 @@ export class MemberCostService {
     return this.apiService.post(`/member-costs/${session.slug}`, {memberCosts: memberCosts}).map(data=>data.memberCosts);
   }
 
+  delete(memberCost: MemberCost) : Observable<any>{
+    return this.apiService.post('/member-costs', {memberCost: memberCost, operation: 'd'}).map(data=>data.session);
+  }
 }

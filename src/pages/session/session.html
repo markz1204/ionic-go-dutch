@@ -28,7 +28,8 @@
           <ion-col col-6>
             <ion-item>
               <ion-label class="small-font">{{costLabels[costType]}} $</ion-label>
-              <ion-input type="number" [readonly]="readyOnly()" [(ngModel)]="cost" (input)="costChanged($event.target.value)"></ion-input>
+              <ion-input type="number" [readonly]="readyOnly()" [(ngModel)]="cost"
+                         (input)="costChanged($event.target.value)"></ion-input>
             </ion-item>
           </ion-col>
         </ion-row>
@@ -47,20 +48,30 @@
 
     <ion-card>
       <ion-card-content>
-          <ion-card-header>
-            <ion-label class="small-font">{{memberCosts.length}} members attended</ion-label>
-          </ion-card-header>
+        <ion-card-header>
+          <ion-label class="small-font">{{memberCosts.length}} members attended</ion-label>
+        </ion-card-header>
 
-            <ion-list>
-              <ion-item *ngFor="let memberCost of memberCosts" (click)="showCost(memberCost)">
-                <ion-avatar item-left>
-                  <img src="{{memberCost.member.picture}}">
-                </ion-avatar>
-                <ion-label class="small-font">{{memberCost.member.firstName}} {{memberCost.member.lastName}}</ion-label>
-                <ion-note item-right>${{memberCost.costAmount}}</ion-note>
+        <ion-list>
+          <ion-item-sliding *ngFor="let memberCost of memberCosts">
+            <ion-item (tap)="showCost(memberCost)">
+              <ion-avatar item-left>
+                <img src="{{memberCost.member.picture}}">
+              </ion-avatar>
+              <ion-label>
+                <p class="small-font">${{memberCost.costAmount}}</p>
+                <p class="small-font">{{memberCost.member.firstName}} {{memberCost.member.lastName}}</p>
+              </ion-label>
+            </ion-item>
 
-              </ion-item>
-            </ion-list>
+            <ion-item-options side="right">
+              <button ion-button clear color="danger" icon-left (click)="removeMember(memberCost)">
+                <ion-icon name="trash"></ion-icon>
+                Remove
+              </button>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
 
       </ion-card-content>
     </ion-card>

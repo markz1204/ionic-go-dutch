@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import { App } from 'ionic-angular';
+import {Component, OnInit} from "@angular/core";
+import {App} from "ionic-angular";
 import {AuthService} from "../../providers/auth-service";
 import {LoginPage} from "../login/login";
 import {FormGroup, FormBuilder} from "@angular/forms";
@@ -20,17 +20,17 @@ export class ProfilePage implements OnInit{
 
   profileForm: FormGroup;
 
-  currentUser: User;
+  user: User;
 
   ngOnInit(): void {
     this.authService.currentUser.subscribe((currentUser)=>{
 
-      this.currentUser = currentUser;
+      this.user = currentUser;
 
       this.profileForm = this.formBuilder.group({
-        email: [this.currentUser.email],
-        firstName: [this.currentUser.firstName],
-        lastName: [this.currentUser.lastName]
+        email: [this.user.email],
+        firstName: [this.user.firstName],
+        lastName: [this.user.lastName]
       });
     });
   }
@@ -39,9 +39,9 @@ export class ProfilePage implements OnInit{
   }
 
   ionViewWillEnter() {
-    this.profileForm.controls['email'].setValue(this.currentUser.email);
-    this.profileForm.controls['firstName'].setValue(this.currentUser.firstName);
-    this.profileForm.controls['lastName'].setValue(this.currentUser.lastName);
+    this.profileForm.controls['email'].setValue(this.user.email);
+    this.profileForm.controls['firstName'].setValue(this.user.firstName);
+    this.profileForm.controls['lastName'].setValue(this.user.lastName);
   }
 
 

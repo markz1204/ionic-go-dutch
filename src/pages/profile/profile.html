@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>profile</ion-title>
+    <ion-title text-center>Profile</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -15,41 +15,49 @@
 
 <ion-content padding>
 
-  Hello {{currentUser.username}}
+  <ion-list inset>
 
-  <form [formGroup]="profileForm">
-    <ion-row>
-      <ion-col>
-        <ion-list inset>
+    <ion-item>
+      <ion-thumbnail item-left>
+        <img src="{{user.picture}}"/>
+      </ion-thumbnail>
+      <h2>{{user.firstName}} {{user.lastName}}</h2>
+    </ion-item>
 
-          <ion-item>
-            <ion-label floating>Email</ion-label>
-            <ion-input type="text" formControlName="email" required></ion-input>
-          </ion-item>
+    <form [formGroup]="profileForm">
+      <ion-row>
+        <ion-col>
+          <ion-list inset>
 
-          <ion-item>
-            <ion-label floating>First name</ion-label>
-            <ion-input type="text" formControlName="firstName" required></ion-input>
-          </ion-item>
+            <ion-item>
+              <ion-label floating>Email</ion-label>
+              <ion-input type="text" formControlName="email" required></ion-input>
+            </ion-item>
 
-          <ion-item>
-            <ion-label floating>Last name</ion-label>
-            <ion-input type="text" formControlName="lastName" required></ion-input>
-          </ion-item>
+            <ion-item>
+              <ion-label floating>First name</ion-label>
+              <ion-input type="text" formControlName="firstName" required></ion-input>
+            </ion-item>
 
-        </ion-list>
-      </ion-col>
-    </ion-row>
+            <ion-item>
+              <ion-label floating>Last name</ion-label>
+              <ion-input type="text" formControlName="lastName" required></ion-input>
+            </ion-item>
 
-    <ion-row>
-      <ion-item>
-        <button ion-button (click)="update()">Update</button>
-      </ion-item>
-      <ion-item>
-        <button ion-button (click)="logout()">Logout</button>
-      </ion-item>
-    </ion-row>
+          </ion-list>
+        </ion-col>
+      </ion-row>
 
-  </form>
+      <ion-row>
+        <ion-item>
+          <button ion-button (click)="update()">Update</button>
+        </ion-item>
+        <ion-item>
+          <button ion-button (click)="logout()" item-right>Logout</button>
+        </ion-item>
+      </ion-row>
+
+    </form>
+  </ion-list>
 
 </ion-content>

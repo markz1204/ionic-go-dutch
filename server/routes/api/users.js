@@ -55,7 +55,7 @@ router.post('/signup', function(req, res, next){
 
           user.save().then(function(){
             res.cookie('gd-token', body.id_token);
-            return res.json({user: user.toAuthJSON(body.id_token)});
+            return res.json({user: user.toProfileJSON()});
           }).catch(next);
         }else{
           return res.sendStatus(401);
@@ -78,7 +78,7 @@ router.get('/current', auth.required, function(req, res, next){
   return User.findOne({email: token.email}).then(function(user){
     if(!user){ return res.sendStatus(401); }
 
-    return res.json({user: user.toAuthJSON(auth.getTokenFromHeader(req))});
+    return res.json({user: user.toProfileJSON()});
   }).catch(next);
 });
 
@@ -110,7 +110,7 @@ router.post('/login', function(req, res, next){
     if (200 === response.statusCode) {
       User.findOne({email: req.body.user.email}).then(function(user){
         res.cookie('gd-token', body.id_token);
-        return res.json({user: user.toAuthJSON(body.id_token)});
+        return res.json({user: user.toProfileJSON()});
       }).catch(next);
     }else{
       return res.sendStatus(401);

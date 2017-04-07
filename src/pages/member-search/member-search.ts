@@ -50,6 +50,9 @@ export class MemberSearchPage {
 
     this.sessionService.addMember(this.currentSession.slug, member).subscribe(updated => {
       this.sessionService.currentSessionSubject.next(updated);
+
+      this.sessionService.isDirtySession = true;
+
     });
 
     let costAmount = 0;
