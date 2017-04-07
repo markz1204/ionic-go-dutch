@@ -1,17 +1,18 @@
-import { Injectable } from '@angular/core';
-import { environment } from '../environments/environment';
-import { Headers, Http, Response, URLSearchParams } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-
-import { JwtService } from './jwt-service';
+import {Injectable} from "@angular/core";
+import {environment} from "../environments/environment";
+import {Headers, Http, Response, URLSearchParams} from "@angular/http";
+import {Observable} from "rxjs/Rx";
+import "rxjs/add/operator/map";
+import "rxjs/add/operator/catch";
+import {JwtService} from "./jwt-service";
+import {Events} from "ionic-angular";
 
 @Injectable()
 export class ApiService {
   constructor(
     private http: Http,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private events: Events
   ) {}
 
   private setHeaders(): Headers {
@@ -27,6 +28,11 @@ export class ApiService {
   }
 
   private formatErrors(error: any) {
+
+    if(error.status === 401 || error.status === 403){
+      this.events.publish('user:logout');
+    }
+
     return Observable.throw(error.json());
   }
 

@@ -17,6 +17,7 @@ import {ProfilePage} from "../pages/profile/profile";
 import {SessionService} from "../providers/session-service";
 import {ApiService} from "../providers/api-service";
 import {MomentModule} from "angular2-moment";
+import {CookieService} from "angular2-cookie/services/cookies.service";
 
 
 @NgModule({
@@ -55,6 +56,7 @@ import {MomentModule} from "angular2-moment";
               MemberCostService,
               JwtService,
               SessionService,
-              ApiService]
+              ApiService,
+              CookieService]
 })
 export class AppModule {}

@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {User} from '../models/user.model';
+import {Injectable} from "@angular/core";
+import {Observable} from "rxjs/Observable";
+import {User} from "../models/user.model";
 import {UserService} from "./user-service";
 import {JwtService} from "./jwt-service";
 import {BehaviorSubject, ReplaySubject} from "rxjs";
@@ -54,7 +54,7 @@ export class AuthService {
 
   setAuth(user: User) {
     // Save JWT sent from server in localstorage
-    this.jwtService.saveToken(user.token);
+    //this.jwtService.saveToken(user.token);
 
     this.currentUserSubject.next(user);
 

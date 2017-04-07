@@ -54,6 +54,7 @@ router.post('/signup', function(req, res, next){
           user.picture = token.picture;
 
           user.save().then(function(){
+            res.cookie('gd-token', body.id_token);
             return res.json({user: user.toAuthJSON(body.id_token)});
           }).catch(next);
         }else{
@@ -108,6 +109,7 @@ router.post('/login', function(req, res, next){
   return request(loginOptions, function (error, response, body) {
     if (200 === response.statusCode) {
       User.findOne({email: req.body.user.email}).then(function(user){
+        res.cookie('gd-token', body.id_token);
         return res.json({user: user.toAuthJSON(body.id_token)});
       }).catch(next);
     }else{

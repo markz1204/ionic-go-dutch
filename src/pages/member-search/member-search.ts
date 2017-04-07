@@ -76,7 +76,6 @@ export class MemberSearchPage {
     memberCosts.push(newMemberCost);
 
     this.memberCostService.createOrUpdate(this.currentSession, memberCosts).subscribe((memberCosts)=>{
-      console.log('created member cost successfully');
     });
 
   }
