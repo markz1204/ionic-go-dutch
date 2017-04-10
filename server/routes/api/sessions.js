@@ -50,6 +50,9 @@ router.get('/', auth.required, function(req, res){
   var token = jwt.decode(auth.getTokenFromHeader(req));
 
   return User.findOne({email: token.email}).then(function(user){
+
+    if(!user){ return res.sendStatus(401); }
+
     if(user){
       return Session.find({organiser: user}).populate('organiser').populate({
         path: 'members',
@@ -93,6 +96,8 @@ router.patch('/:session/members', auth.required, function(req, res) {
   if(req.sessionObj){
 
     User.findOne({email: req.body.member.email}).then(function(user){
+
+      if(!user){ return res.sendStatus(401); }
 
       if(user){
 

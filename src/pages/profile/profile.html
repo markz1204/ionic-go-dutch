@@ -19,10 +19,10 @@
 
     <ion-item>
       <ion-thumbnail item-left>
-        <img src="{{user.picture}}"/>
+        <img small src="{{user.picture}}"/>
       </ion-thumbnail>
-      <h2>{{user.firstName}} {{user.lastName}}</h2>
-      <qr-code item-right value="{{user.email}}" size="40"></qr-code>
+      <p class="small-font">{{user.firstName}} {{user.lastName}}</p>
+      <qr-code item-right value="{{user.email}}" size="30"></qr-code>
     </ion-item>
 
     <form [formGroup]="profileForm">
@@ -42,7 +42,7 @@
 
             <ion-item>
               <ion-label floating>Last name</ion-label>
-              <ion-input type="text" formControlName="lastName" required></ion-input>
+              <ion-input type="text" formControlName="lastName"></ion-input>
             </ion-item>
 
           </ion-list>

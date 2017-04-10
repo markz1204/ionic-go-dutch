@@ -20,7 +20,7 @@ router.post('/signup', function(req, res, next){
         email: email,
         password: password,
         connection: 'Username-Password-Authentication',
-        user_metadata: { firstName: firstName, lastName: lastName } },
+        user_metadata: { firstName: firstName, lastName: lastName} },
     json: true };
 
   var loginOptions = {
@@ -53,17 +53,22 @@ router.post('/signup', function(req, res, next){
           var token = jwt.decode(body.id_token);
           user.picture = token.picture;
 
+          if(!user.firstName){
+            user.firstName = token.nickname;
+          }
+
           user.save().then(function(){
             res.cookie('gd-token', body.id_token);
             return res.json({user: user.toProfileJSON()});
           }).catch(next);
         }else{
-          return res.sendStatus(401);
+          res.statusCode = 400;
+          return res.json({error: {statusCode: response.statusCode, message: 'error happened when logging'}});
         }
       });
     }else{
       if(400 === response.statusCode){
-        return res.json(body);
+        return res.json({error: {statusCode: 400, message: body.description}});
       }else {
         return res.sendStatus(401);
       }
@@ -109,6 +114,9 @@ router.post('/login', function(req, res, next){
   return request(loginOptions, function (error, response, body) {
     if (200 === response.statusCode) {
       User.findOne({email: req.body.user.email}).then(function(user){
+
+        if(!user){ return res.sendStatus(401); }
+
         res.cookie('gd-token', body.id_token);
         return res.json({user: user.toProfileJSON()});
       }).catch(next);
@@ -123,6 +131,7 @@ router.get('/', auth.required, function(req, res){
   if(req.query.q) {
 
     return User.find({email: new RegExp(req.query.q, 'i')}).then(function (users) {
+      
       return res.json({
         users: users.map(function (user) {
           return user.toProfileJSON();
@@ -139,6 +148,8 @@ router.patch('/', auth.required, function(req, res, next){
   var token = jwt.decode(auth.getTokenFromHeader(req));
 
   return User.findOne({email: token.email}).then(function (user) {
+
+    if(!user){ return res.sendStatus(401); }
 
     Object.assign(user, req.body.user);
 

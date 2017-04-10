@@ -36,7 +36,7 @@ export class OptionsPage {
     this.viewCtrl.dismiss();
   }
 
-  collect(){
+  record(){
 
     this.sessionService.isDirtySession = false;
 

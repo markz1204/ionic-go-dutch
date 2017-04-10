@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {NavController} from "ionic-angular";
+import {NavController, Events} from "ionic-angular";
 import {Session} from "../../models/session.model";
 import {SessionPage} from "../session/session";
 import {SessionCreatePage} from "../session-create/session-create";
@@ -19,13 +19,20 @@ export class SessionsPage {
 
   sessions: Session[];
 
-  constructor(public navCtrl: NavController, private sessionService: SessionService) {
+  constructor(public navCtrl: NavController, private sessionService: SessionService, private events: Events) {
   }
 
   ionViewWillEnter(){
-    this.sessionService.getAll().subscribe(data=>{
+    this.sessionService.getAll().subscribe(
+      data=>{
       this.sessions = data;
-    });
+      },
+      err=>{
+        if(401 === err.statusCode || 403 === err.statusCode){
+          this.events.publish('user:logout');
+        }
+      }
+      );
   }
 
   createSession(){

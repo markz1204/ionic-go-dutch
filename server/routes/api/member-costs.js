@@ -52,7 +52,7 @@ router.get('/:session', auth.required, function(req, res, next){
       .populate('member')
       .populate({path: 'session', populate:{path:'organiser', model:'User'}})
       .populate({path: 'session', populate:{path: 'members', model:'User'}})
-      .then(function(memberCosts){
+      .exec(function(err, memberCosts){
       return res.json({
               memberCosts:  memberCosts.map(function(memberCost){
                 return memberCost.toJSONForDetails();

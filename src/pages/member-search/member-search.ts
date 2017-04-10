@@ -23,6 +23,8 @@ export class MemberSearchPage {
 
   currentSession: Session;
 
+  showNoMatched: boolean = false;
+
   constructor(public navCtrl: NavController, private navParams: NavParams, private userService: UserService, private sessionService: SessionService, private memberCostService: MemberCostService) {
 
     this.sessionService.currentSession.subscribe((session) => {
@@ -37,6 +39,13 @@ export class MemberSearchPage {
 
     this.userService.query(q).subscribe(results => {
       this.members = results;
+
+      if(q && this.members.length === 0){
+        this.showNoMatched = true;
+      }else{
+        this.showNoMatched = false;
+      }
+
     });
   }
 

@@ -42,7 +42,7 @@ export class MyApp implements OnInit{
 
   listenToLoginEvents(){
     this.events.subscribe('user:logout', () => {
-      this.authService.populate();
+      this.authService.purgeAuth();
     });
   }
 }

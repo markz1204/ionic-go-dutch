@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title text-center>Create new session</ion-title>
+    <ion-title text-center>New session</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -33,7 +33,7 @@
         <ion-label>End time</ion-label>
         <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" formControlName="endTime"></ion-datetime>
       </ion-item>
-      <button ion-button padding type="submit" [disabled]="!session.valid">Create</button>
+      <button ion-button block type="submit" [disabled]="!session.valid">Create</button>
     </form>
   </ion-list>
 

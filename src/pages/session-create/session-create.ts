@@ -22,7 +22,7 @@ export class SessionCreatePage {
   constructor(private navCtrl: NavController, private formBuilder: FormBuilder, private sessionService: SessionService) {
 
     this.session = this.formBuilder.group({
-      title: ['', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(25)])],
+      title: ['', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(100)])],
       startTime: ['', Validators.required],
       endTime: ['', Validators.required]
     });

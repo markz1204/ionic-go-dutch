@@ -5,14 +5,12 @@ import {Observable} from "rxjs/Rx";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
 import {JwtService} from "./jwt-service";
-import {Events} from "ionic-angular";
 
 @Injectable()
 export class ApiService {
   constructor(
     private http: Http,
-    private jwtService: JwtService,
-    private events: Events
+    private jwtService: JwtService
   ) {}
 
   private setHeaders(): Headers {
@@ -28,12 +26,7 @@ export class ApiService {
   }
 
   private formatErrors(error: any) {
-
-    if(error.status === 401 || error.status === 403){
-      this.events.publish('user:logout');
-    }
-
-    return Observable.throw(error.json());
+    return Observable.throw({statusCode: error.status, message: 'user is not authorized'});
   }
 
   get(path: string, params: URLSearchParams = new URLSearchParams()): Observable<any> {

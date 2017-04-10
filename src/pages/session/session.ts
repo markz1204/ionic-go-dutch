@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {PopoverController, AlertController, NavParams, NavController} from "ionic-angular";
+import {PopoverController, AlertController, NavParams, NavController, Events} from "ionic-angular";
 import {OptionsPage} from "../options/options";
 import {CostType} from "../../enums/CostType.enum";
 import {SessionService} from "../../providers/session-service";
@@ -38,9 +38,7 @@ export class SessionPage {
 
   //Inject navParams is allow to pass memberCosts.
   constructor(private popOverCtrl: PopoverController, private navCtrl: NavController, private navParams: NavParams, private alertCtrl: AlertController,
-              private memberCostService: MemberCostService, private sessionService: SessionService) {
-
-    console.log('initial ' + this.isInitial);
+              private memberCostService: MemberCostService, private sessionService: SessionService, private events: Events) {
 
     this.sessionService.currentSession.subscribe((session) => {
       this.session = session;
@@ -48,16 +46,20 @@ export class SessionPage {
       this.costType = this.session.costType.toString();
 
       this.memberCostService.get(this.session).subscribe((memberCosts) => {
-        this.memberCosts = memberCosts;
+          this.memberCosts = memberCosts;
 
-        if(this.isInitial) {
-          this.initialCost();
-          this.isInitial = false;
-        }else{
-          this.calculateCost();
+          if (this.isInitial) {
+            this.initialCost();
+            this.isInitial = false;
+          } else {
+            this.calculateCost();
+          }
+        },
+
+        err => {
+          this.events.publish('user:logout');
         }
-
-      });
+      );
     });
   }
 
@@ -79,7 +81,7 @@ export class SessionPage {
             handler: () => {
 
               this.sessionService.isDirtySession = false;
-              confirm.dismiss().then(()=>{
+              confirm.dismiss().then(() => {
                 this.navCtrl.pop();
               });
             }
@@ -90,7 +92,7 @@ export class SessionPage {
             handler: () => {
               this.sessionService.isDirtySession = false;
 
-              this.memberCostService.createOrUpdate(this.session, this.memberCosts).subscribe((memberCosts)=>{
+              this.memberCostService.createOrUpdate(this.session, this.memberCosts).subscribe((memberCosts) => {
                 this.navCtrl.pop();
               });
             }
@@ -100,12 +102,12 @@ export class SessionPage {
       confirm.present();
 
       return false;
-    }else{
+    } else {
       return true;
     }
   }
 
-    presentOptions(event) {
+  presentOptions(event) {
     let popover = this.popOverCtrl.create(OptionsPage, {memberCosts: this.memberCosts});
     popover.present({ev: event});
   }
@@ -132,7 +134,7 @@ export class SessionPage {
 
   showCost(memberCost: MemberCost) {
     let modification = this.alertCtrl.create();
-    modification.setTitle("Modify cost");
+    modification.setTitle("Change cost");
 
     modification.addInput({
       type: 'number',
@@ -142,7 +144,7 @@ export class SessionPage {
 
     modification.addButton('Cancel');
     modification.addButton({
-      text: 'Change',
+      text: 'Set',
       handler: data => {
         memberCost.costAmount = data[0] || 0;
         this.costType = CostType.ARBITRARY.toString();

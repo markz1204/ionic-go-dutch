@@ -15,7 +15,7 @@ import {BehaviorSubject, ReplaySubject} from "rxjs";
 export class AuthService {
 
   currentUserSubject = new BehaviorSubject<User>(new User());
-  currentUser = this.currentUserSubject.asObservable().distinctUntilChanged();
+  currentUser = this.currentUserSubject.asObservable();
 
   isAuthenticatedSubject = new ReplaySubject<boolean>(1);
   isAuthenticated = this.isAuthenticatedSubject.asObservable();
@@ -39,14 +39,18 @@ export class AuthService {
     }
   }
 
-  public register(credentials) : Observable<User> {
+  public register(credentials) : Observable<any> {
     if (credentials.username === null || credentials.email === null || credentials.password === null) {
       return Observable.throw("Please insert credentials");
     } else {
       return this.userService.registerUser(credentials).map(
         data =>{
-          this.setAuth(data.user);
-          return data.user;
+
+          if(data.user) {
+            this.setAuth(data.user);
+          }
+
+          return data;
         }
       );
     }

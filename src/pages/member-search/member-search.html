@@ -17,6 +17,7 @@
 
 
 <ion-content padding>
+
   <ion-list>
     <ion-item *ngFor="let member of members">
       <ion-avatar item-left>
@@ -27,5 +28,11 @@
       <button ion-button clear item-right *ngIf="!isAlreadyInSession(member)" (click)="addToSession(member)">Add</button>
       <ion-badge *ngIf="isAlreadyInSession(member)" item-right>Added</ion-badge>
     </ion-item>
+
+    <ion-item *ngIf="showNoMatched">
+      <h2>No matched user found</h2>
+    </ion-item>
+
   </ion-list>
+
 </ion-content>

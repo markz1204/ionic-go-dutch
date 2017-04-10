@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {NavController} from "ionic-angular";
+import {NavController, AlertController} from "ionic-angular";
 import {AuthService} from "../../providers/auth-service";
 import {FormGroup, FormBuilder} from "@angular/forms";
 import {TabsPage} from "../tabs/tabs";
@@ -20,7 +20,7 @@ export class RegisterPage{
 
   registerForm: FormGroup;
 
-  constructor(private navCtrl: NavController, private auth: AuthService, private formBuilder: FormBuilder) {
+  constructor(private navCtrl: NavController, private auth: AuthService, private formBuilder: FormBuilder, private alertCtrl: AlertController) {
     this.registerForm = formBuilder.group({
       //username: [''],
       email: [''],
@@ -32,10 +32,25 @@ export class RegisterPage{
     if(this.registerForm.valid) {
 
       this.auth.register(this.registerForm.value).subscribe(
-        data => this.navCtrl.setRoot(TabsPage),
+        (data) => {
+          if(data.user) {
+            this.navCtrl.setRoot(TabsPage);
+          }else{
+            if(data.error){
+              let alert = this.alertCtrl.create({
+                title: 'Error',
+                message: data.error.message,
+                buttons: ['OK']
+              });
+
+              alert.present();
+            }
+          }
+        },
         error => {
           this.serverErrors = Object.assign({}, error);
         }
+
       );
     }
   }
