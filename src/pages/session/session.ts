@@ -72,7 +72,7 @@ export class SessionPage {
     if (this.sessionService.isDirtySession) {
       let confirm = this.alertCtrl.create({
         title: 'Save changes',
-        message: 'Do you want to save the changes?',
+        message: 'You made some changes, do you want to save it?',
         buttons: [
           {
             text: 'No',
@@ -146,6 +146,7 @@ export class SessionPage {
       handler: data => {
         memberCost.costAmount = data[0] || 0;
         this.costType = CostType.ARBITRARY.toString();
+        this.sessionService.isDirtySession = true;
         this.calculateCost();
       }
     });

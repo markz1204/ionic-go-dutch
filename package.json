@@ -22,6 +22,7 @@
     "@ionic/storage": "1.1.7",
     "angular2-cookie": "^1.2.6",
     "angular2-moment": "^1.2.0",
+    "angular2-qrcode": "^2.0.0",
     "ionic-angular": "2.0.0",
     "ionic-native": "2.4.1",
     "ionicons": "3.0.0",
@@ -39,7 +40,8 @@
     "cordova-plugin-statusbar",
     "cordova-plugin-device",
     "cordova-plugin-splashscreen",
-    "ionic-plugin-keyboard"
+    "ionic-plugin-keyboard",
+    "phonegap-plugin-barcodescanner"
   ],
   "cordovaPlatforms": [],
   "description": "ionic-go-dutch: An Ionic project"

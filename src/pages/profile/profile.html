@@ -22,6 +22,7 @@
         <img src="{{user.picture}}"/>
       </ion-thumbnail>
       <h2>{{user.firstName}} {{user.lastName}}</h2>
+      <qr-code item-right value="{{user.email}}" size="40"></qr-code>
     </ion-item>
 
     <form [formGroup]="profileForm">

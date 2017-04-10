@@ -18,6 +18,7 @@ import {SessionService} from "../providers/session-service";
 import {ApiService} from "../providers/api-service";
 import {MomentModule} from "angular2-moment";
 import {CookieService} from "angular2-cookie/services/cookies.service";
+import {QRCodeModule} from "angular2-qrcode";
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import {CookieService} from "angular2-cookie/services/cookies.service";
   ],
   imports: [
     MomentModule,
+    QRCodeModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
