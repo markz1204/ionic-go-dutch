@@ -4,6 +4,7 @@ var User = mongoose.model('User');
 var auth = require('../auth');
 var request = require("request");
 var jwt = require('jsonwebtoken');
+var config = require('../../config/index');
 
 router.post('/signup', function(req, res, next){
 
@@ -13,10 +14,10 @@ router.post('/signup', function(req, res, next){
       lastName = req.body.user.lastName;
 
   var signupOptions = { method: 'POST',
-    url: 'https://dreamingmonkey.au.auth0.com/dbconnections/signup',
+    url: config.auth0_signup_url,
     headers: { 'content-type': 'application/json' },
     body:
-      { client_id: 'TbHzK1zgP9mMH8qvoEWCN87HglMeZNxp',
+      { client_id: config.auth0_client_id,
         email: email,
         password: password,
         connection: 'Username-Password-Authentication',
@@ -25,10 +26,10 @@ router.post('/signup', function(req, res, next){
 
   var loginOptions = {
     method: 'POST',
-    url: 'https://dreamingmonkey.au.auth0.com/oauth/ro',
+    url: config.auth0_login_url,
     headers: { 'content-type': 'application/json' },
     body: {
-      client_id: 'TbHzK1zgP9mMH8qvoEWCN87HglMeZNxp',
+      client_id: config.auth0_client_id,
       username: email,
       password: password,
       connection: 'Username-Password-Authentication',
@@ -131,7 +132,7 @@ router.get('/', auth.required, function(req, res){
   if(req.query.q) {
 
     return User.find({email: new RegExp(req.query.q, 'i')}).then(function (users) {
-      
+
       return res.json({
         users: users.map(function (user) {
           return user.toProfileJSON();

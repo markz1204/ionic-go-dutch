@@ -7,7 +7,9 @@ var fs = require('fs'),
   session = require('express-session'),
   cors = require('cors'),
   errorhandler = require('errorhandler'),
-  mongoose = require('mongoose');
+  mongoose = require('mongoose'),
+  config = require('./config/index');
+
 
 var isProduction = process.env.NODE_ENV === 'production';
 
@@ -24,18 +26,14 @@ app.use(bodyParser.json());
 app.use(require('method-override')());
 app.use(express.static(__dirname + '/public'));
 
-app.use(session({ secret: 'go-dutch', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false  }));
+app.use(session({ secret: config.secret, cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false  }));
 
 if (!isProduction) {
   app.use(errorhandler());
-}
-
-if(isProduction){
-  mongoose.connect(process.env.MONGODB_URI);
-} else {
-  mongoose.connect('mongodb://localhost/go-dutch');
   mongoose.set('debug', true);
 }
+
+mongoose.connect(config.mongodb_uri);
 
 require('./models/User');
 require('./models/Session');
