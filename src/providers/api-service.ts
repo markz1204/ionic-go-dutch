@@ -26,7 +26,7 @@ export class ApiService {
   }
 
   private formatErrors(error: any) {
-    return Observable.throw({statusCode: error.status, message: 'user is not authorized'});
+    return Observable.throw(JSON.parse(error._body).error);
   }
 
   get(path: string, params: URLSearchParams = new URLSearchParams()): Observable<any> {

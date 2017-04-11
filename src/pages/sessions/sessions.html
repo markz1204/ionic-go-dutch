@@ -23,7 +23,7 @@
 <ion-content padding class="no-scroll">
   <ion-card *ngFor="let session of sessions" (click)="goToSession(session)">
     <ion-card-header>
-      {{session.title}}
+      <h2 text-capitalize>{{session.title}}</h2>
     </ion-card-header>
     <ion-card-content>
       There are {{session.members.length}} members

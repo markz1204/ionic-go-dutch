@@ -4,6 +4,7 @@ import {AuthService} from "../../providers/auth-service";
 import {RegisterPage} from "../register/register";
 import {TabsPage} from "../tabs/tabs";
 import {FormGroup, FormBuilder} from "@angular/forms";
+import {EmailValidator} from "../../validators/EmailValidator";
 
 /*
   Generated class for the Login page.
@@ -23,7 +24,7 @@ export class LoginPage {
 
   constructor(private navCtrl: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, formBuilder: FormBuilder) {
     this.loginForm = formBuilder.group({
-      email: [''],
+      email: ['', EmailValidator.isValid],
       password: ['']
     });
   }
@@ -40,12 +41,10 @@ export class LoginPage {
           if (isAuthenticated) {
             this.loading.dismiss();
             this.navCtrl.setRoot(TabsPage);
-          } else {
-            this.showError();
           }
         },
         error => {
-          this.showError();
+          this.showError(error);
         });
     }
   }
@@ -57,17 +56,17 @@ export class LoginPage {
     this.loading.present();
   }
 
-  showError() {
+  showError(error) {
     setTimeout(() => {
       this.loading.dismiss();
     });
 
     let alert = this.alertCtrl.create({
-      title: 'Login fail',
-      subTitle: 'email and password does not match',
+      title: 'Fail',
+      subTitle: error.message,
       buttons: ['OK']
     });
-    alert.present(prompt);
+    alert.present();
   }
 
 

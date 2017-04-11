@@ -12,30 +12,35 @@
 
 </ion-header>
 
-<ion-content class="login-content" padding>
+<ion-content class="login-content no-scroll" padding>
   <div class="login-box">
 
     <form [formGroup]="registerForm">
       <ion-row>
         <ion-col>
           <ion-list inset>
-            <!--<ion-item>
-              <ion-input type="text" placeholder="Username" formControlName="username" required></ion-input>
-            </ion-item>
-            <ion-item *ngIf="serverErrors.errors && serverErrors.errors.username">
-              <p>Username {{serverErrors.errors && serverErrors.errors.username}}</p>
-            </ion-item>-->
             <ion-item>
               <ion-input type="text" placeholder="Email" formControlName="email" required></ion-input>
             </ion-item>
             <ion-item *ngIf="serverErrors.errors && serverErrors.errors.email">
               <p>Email {{serverErrors.errors && serverErrors.errors.email}}</p>
             </ion-item>
+            <ion-item *ngIf="registerForm.controls.email.dirty && registerForm.controls.email.errors">
+              <p>Please provide a valid email address.</p>
+            </ion-item>
             <ion-item>
               <ion-input type="password" placeholder="Password" formControlName="password" required></ion-input>
             </ion-item>
-            <ion-item *ngIf="registerForm.controls.password.dirty && errors && errors.password">
-              <p>Please enter a valid password.</p>
+            <ion-item *ngIf="registerForm.controls.password.dirty && registerForm.controls.password.errors">
+              <p>Password must be at least 8 characters.</p>
+            </ion-item>
+            <ion-item>
+              <ion-input type="password" placeholder="Repeat password" formControlName="confirmPassword" validateEqual="password" required></ion-input>
+            </ion-item>
+            <ion-item *ngIf="registerForm.controls.confirmPassword.dirty &&
+                             registerForm.controls.confirmPassword.errors &&
+                             registerForm.controls.confirmPassword.errors.valueNotEqual">
+              <p class="error">Password does not match.</p>
             </ion-item>
           </ion-list>
         </ion-col>

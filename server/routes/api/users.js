@@ -64,7 +64,7 @@ router.post('/signup', function(req, res, next){
           }).catch(next);
         }else{
           res.statusCode = 400;
-          return res.json({error: {statusCode: response.statusCode, message: 'error happened when logging'}});
+          return res.json({error: {statusCode: response.statusCode, message: 'error happened when signup'}});
         }
       });
     }else{
@@ -100,10 +100,10 @@ router.post('/login', function(req, res, next){
 
   var loginOptions = {
     method: 'POST',
-    url: 'https://dreamingmonkey.au.auth0.com/oauth/ro',
+    url: config.auth0_login_url,
     headers: { 'content-type': 'application/json' },
     body: {
-      client_id: 'TbHzK1zgP9mMH8qvoEWCN87HglMeZNxp',
+      client_id: config.auth0_client_id,
       username: req.body.user.email,
       password: req.body.user.password,
       connection: 'Username-Password-Authentication',
@@ -120,9 +120,9 @@ router.post('/login', function(req, res, next){
 
         res.cookie('gd-token', body.id_token);
         return res.json({user: user.toProfileJSON()});
-      }).catch(next);
+      });
     }else{
-      return res.sendStatus(401);
+      return res.status(401).json({error: {statusCode: 401, message: 'email or password is invalid'}});
     }
   });
 });

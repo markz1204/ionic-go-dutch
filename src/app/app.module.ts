@@ -19,6 +19,7 @@ import {ApiService} from "../providers/api-service";
 import {MomentModule} from "angular2-moment";
 import {CookieService} from "angular2-cookie/services/cookies.service";
 import {QRCodeModule} from "angular2-qrcode";
+import {EqualValidatorDirective} from "../directives/equal.directive";
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import {QRCodeModule} from "angular2-qrcode";
     SessionCreatePage,
     MemberSearchPage,
     TabsPage,
-    ProfilePage
+    ProfilePage,
+    EqualValidatorDirective
   ],
   imports: [
     MomentModule,

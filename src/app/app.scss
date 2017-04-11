@@ -14,10 +14,16 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-.no-scroll .scroll-content{
+.no-scroll .scroll-content,
+.no-scroll-alert .alert-message{
   overflow: hidden;
 }
 
 .small-font{
   font-size: x-small;
+}
+
+.error{
+  font-size: 0.8em;
+  color: #d2d2d2;
 }

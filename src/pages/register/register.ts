@@ -1,8 +1,9 @@
 import {Component} from "@angular/core";
 import {NavController, AlertController} from "ionic-angular";
 import {AuthService} from "../../providers/auth-service";
-import {FormGroup, FormBuilder} from "@angular/forms";
+import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {TabsPage} from "../tabs/tabs";
+import {EmailValidator} from "../../validators/EmailValidator";
 
 /*
   Generated class for the Register page.
@@ -22,9 +23,9 @@ export class RegisterPage{
 
   constructor(private navCtrl: NavController, private auth: AuthService, private formBuilder: FormBuilder, private alertCtrl: AlertController) {
     this.registerForm = formBuilder.group({
-      //username: [''],
-      email: [''],
-      password: ['']
+      email: ['', EmailValidator.isValid],
+      password: ['', Validators.minLength(8)],
+      confirmPassword: ['']
     });
   }
 
@@ -40,7 +41,8 @@ export class RegisterPage{
               let alert = this.alertCtrl.create({
                 title: 'Error',
                 message: data.error.message,
-                buttons: ['OK']
+                buttons: ['OK'],
+                cssClass: 'no-scroll-alert'
               });
 
               alert.present();
