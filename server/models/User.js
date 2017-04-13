@@ -21,4 +21,15 @@ UserSchema.methods.toProfileJSON = function(){
   };
 };
 
+UserSchema.methods.toAuthJSON = function(token){
+  return {
+    id: this._id,
+    email: this.email,
+    firstName: this.firstName,
+    lastName: this.lastName,
+    picture: this.picture,
+    token: token
+  };
+};
+
 mongoose.model('User', UserSchema);

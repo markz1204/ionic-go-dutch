@@ -132,6 +132,10 @@ export class SessionPage {
     return !this.appStatus.isOrganiser || ("2" === this.costType);
   }
 
+  segmentDisabled(){
+    return !this.appStatus.isOrganiser;
+  }
+
   showCost(memberCost: MemberCost) {
     let modification = this.alertCtrl.create();
     modification.setTitle("Change cost");

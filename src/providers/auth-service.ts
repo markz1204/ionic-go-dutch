@@ -58,7 +58,7 @@ export class AuthService {
 
   setAuth(user: User) {
     // Save JWT sent from server in localstorage
-    //this.jwtService.saveToken(user.token);
+    this.jwtService.saveToken(user.token);
 
     this.currentUserSubject.next(user);
 

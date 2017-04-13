@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {App, ModalController} from "ionic-angular";
+import {App, ModalController, ToastController} from "ionic-angular";
 import {AuthService} from "../../providers/auth-service";
 import {LoginPage} from "../login/login";
 import {FormGroup, FormBuilder} from "@angular/forms";
@@ -36,7 +36,8 @@ export class ProfilePage implements OnInit{
     });
   }
 
-  constructor(public appCtrl: App, public authService: AuthService, private userService: UserService, private formBuilder: FormBuilder, private modalCtrl: ModalController) {
+  constructor(public appCtrl: App, public authService: AuthService, private userService: UserService, private formBuilder: FormBuilder,
+              private modalCtrl: ModalController, private toastCtrl: ToastController) {
   }
 
   ionViewWillEnter() {
@@ -50,6 +51,11 @@ export class ProfilePage implements OnInit{
     if(this.profileForm.valid) {
       this.userService.update(this.profileForm.value).subscribe(updated=>{
         this.authService.currentUserSubject.next(updated.user);
+
+        let toast = this.toastCtrl.create({message: 'Successfully updated', duration:2000});
+
+        toast.present();
+
       });
     }
   }

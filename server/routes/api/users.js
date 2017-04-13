@@ -59,8 +59,8 @@ router.post('/signup', function(req, res, next){
           }
 
           user.save().then(function(){
-            res.cookie('gd-token', body.id_token);
-            return res.json({user: user.toProfileJSON()});
+            //res.cookie('gd-token', body.id_token);
+            return res.json({user: user.toAuthJSON(body.id_token)});
           }).catch(next);
         }else{
           res.statusCode = 400;
@@ -118,8 +118,8 @@ router.post('/login', function(req, res, next){
 
         if(!user){ return res.sendStatus(401); }
 
-        res.cookie('gd-token', body.id_token);
-        return res.json({user: user.toProfileJSON()});
+        //res.cookie('gd-token', body.id_token);
+        return res.json({user: user.toAuthJSON(body.id_token)});
       });
     }else{
       return res.status(401).json({error: {statusCode: 401, message: 'email or password is invalid'}});

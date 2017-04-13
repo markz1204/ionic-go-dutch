@@ -32,7 +32,7 @@ export class SessionsPage {
       this.sessions = data;
       },
       err=>{
-        if(401 === err.statusCode || 403 === err.statusCode){
+        if(err || 401 === err.statusCode || 403 === err.statusCode){
           this.events.publish('user:logout');
         }
       }

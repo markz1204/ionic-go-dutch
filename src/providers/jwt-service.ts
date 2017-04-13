@@ -1,24 +1,23 @@
 import {Injectable} from "@angular/core";
-import {CookieService} from "angular2-cookie/core";
+//import {CookieService} from "angular2-cookie/core";
 
 @Injectable()
 export class JwtService {
 
-  constructor(private cookieService: CookieService){}
+  constructor(){}
 
   getToken(): String {
-    //return window.localStorage['jwtToken'];
-    return this.cookieService.get('gd-token');
+    return window.localStorage['gd-token'];
+    //return this.cookieService.get('gd-token');
   }
 
   saveToken(token: String) {
-    //window.localStorage['jwtToken'] = token;
-
+    window.localStorage['gd-token'] = token;
   }
 
   destroyToken() {
-    //window.localStorage.removeItem('jwtToken');
-    this.cookieService.remove('gd-token');
+    window.localStorage.removeItem('gd-token');
+    //this.cookieService.remove('gd-token');
   }
 
 }

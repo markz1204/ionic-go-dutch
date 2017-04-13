@@ -37,7 +37,7 @@
       </ion-card-header>
       <ion-card-content>
         <div>
-          <ion-segment class="small-font" [(ngModel)]="costType" (ionChange)="segmentChanged()" [disabled]="readOnly()">
+          <ion-segment class="small-font" [(ngModel)]="costType" (ionChange)="segmentChanged()" [disabled]="segmentDisabled()">
             <ion-segment-button *ngFor="let segment of segmentItems" value="{{segment.value}}">
               {{segment.name}}
             </ion-segment-button>
@@ -73,7 +73,7 @@
           </ion-item-sliding>
         </ion-list>
 
-        <ion-list *ngIf="readOnly()">
+        <ion-list *ngIf="segmentDisabled()">
           <ion-item *ngFor="let memberCost of memberCosts">
             <ion-avatar item-left>
               <img src="{{memberCost.member.picture}}">
