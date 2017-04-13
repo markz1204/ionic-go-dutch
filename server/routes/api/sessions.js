@@ -54,15 +54,22 @@ router.get('/', auth.required, function(req, res){
     if(!user){ return res.sendStatus(401); }
 
     if(user){
-      return Session.find({organiser: user}).populate('organiser').populate({
+
+      var condition = req.query.c === '0' ? {organiser: user} : {organiser: {$not: {$eq: user}}, members: {$elemMatch: {$eq: user}}};
+
+      return Session.find(condition).populate('organiser').populate({
         path: 'members',
         model: 'User'
-      }).exec(function(err, sessions) {
-        return res.json({
-          sessions: sessions.map(function(session){
-            return session.toJSONForDetails();
-          })
-        })
+      }).sort({startTime: 'desc', endTime: 'desc'}).exec(function(err, sessions) {
+        if(sessions && sessions.length > 0){
+          return res.json({
+            sessions: sessions.map(function(session){
+              return session.toJSONForDetails();
+            })
+          });
+        }else{
+          return res.json({sessions: []});
+        }
       });
     }
   });

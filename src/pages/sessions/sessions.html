@@ -21,12 +21,24 @@
 
 
 <ion-content padding class="no-scroll">
+
+  <div padding>
+    <ion-segment [(ngModel)]="category" (ionChange)="segmentChanged()">
+      <ion-segment-button value="0">
+        Organised
+      </ion-segment-button>
+      <ion-segment-button value="1">
+        Attended
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
   <ion-card *ngFor="let session of sessions" (click)="goToSession(session)">
     <ion-card-header>
       <h2 text-capitalize>{{session.title}}</h2>
     </ion-card-header>
     <ion-card-content>
-      There are {{session.members.length}} members
+      <p class="small-font">{{session.members.length}} members joined</p>
     </ion-card-content>
     <ion-item-divider>
       <ion-label class="small-font">Duration: {{session.startTime | amDateFormat:'HH:mm'}} - {{session.endTime | amDateFormat:'HH:mm'}} on {{session.startTime | amDateFormat:'LL'}}</ion-label>

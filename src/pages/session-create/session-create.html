@@ -13,13 +13,13 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content class="no-scroll" padding>
 
-  <ion-list>
+  <ion-list inset>
 
     <form [formGroup]="session" (ngSubmit)="createSession()">
       <ion-item>
-        <ion-label fixed>Title</ion-label>
+        <ion-label>Title</ion-label>
         <ion-input type="text" formControlName="title"></ion-input>
       </ion-item>
       <ion-item *ngIf="serverErrors.errors && serverErrors.errors.title">

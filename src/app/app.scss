@@ -19,6 +19,17 @@
   overflow: hidden;
 }
 
+.profile-qr img{
+  margin:0 auto;
+  display: block;
+}
+
+.profile-pic{
+  margin:0 auto;
+  max-width: 80px !important;
+  max-height: 80px !important;
+}
+
 .small-font{
   font-size: x-small;
 }

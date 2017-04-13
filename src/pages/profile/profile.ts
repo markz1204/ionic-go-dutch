@@ -1,10 +1,11 @@
 import {Component, OnInit} from "@angular/core";
-import {App} from "ionic-angular";
+import {App, ModalController} from "ionic-angular";
 import {AuthService} from "../../providers/auth-service";
 import {LoginPage} from "../login/login";
 import {FormGroup, FormBuilder} from "@angular/forms";
 import {UserService} from "../../providers/user-service";
 import {User} from "../../models/user.model";
+import {QrcodePage} from "../qrcode/qrcode";
 
 /*
   Generated class for the Profile page.
@@ -35,7 +36,7 @@ export class ProfilePage implements OnInit{
     });
   }
 
-  constructor(public appCtrl: App, public authService: AuthService, private userService: UserService, private formBuilder: FormBuilder) {
+  constructor(public appCtrl: App, public authService: AuthService, private userService: UserService, private formBuilder: FormBuilder, private modalCtrl: ModalController) {
   }
 
   ionViewWillEnter() {
@@ -57,6 +58,11 @@ export class ProfilePage implements OnInit{
     this.authService.logout().subscribe((success)=>{
       this.appCtrl.getRootNav().setRoot(LoginPage);
     });
+  }
+
+  popupQR(){
+    let modal = this.modalCtrl.create(QrcodePage, {params: {user: this.user}}, {showBackdrop: true, enableBackdropDismiss: true});
+    modal.present();
   }
 
 }

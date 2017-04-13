@@ -20,6 +20,8 @@ import {MomentModule} from "angular2-moment";
 import {CookieService} from "angular2-cookie/services/cookies.service";
 import {QRCodeModule} from "angular2-qrcode";
 import {EqualValidatorDirective} from "../directives/equal.directive";
+import {AppStatus} from "../providers/app-status";
+import {QrcodePage} from "../pages/qrcode/qrcode";
 
 
 @NgModule({
@@ -34,6 +36,7 @@ import {EqualValidatorDirective} from "../directives/equal.directive";
     MemberSearchPage,
     TabsPage,
     ProfilePage,
+    QrcodePage,
     EqualValidatorDirective
   ],
   imports: [
@@ -52,7 +55,8 @@ import {EqualValidatorDirective} from "../directives/equal.directive";
     SessionCreatePage,
     MemberSearchPage,
     TabsPage,
-    ProfilePage
+    ProfilePage,
+    QrcodePage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
               AuthService,
@@ -61,6 +65,7 @@ import {EqualValidatorDirective} from "../directives/equal.directive";
               JwtService,
               SessionService,
               ApiService,
-              CookieService]
+              CookieService,
+              AppStatus]
 })
 export class AppModule {}

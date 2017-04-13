@@ -4,6 +4,7 @@ import {MemberSearchPage} from "../member-search/member-search";
 import {MemberCostService} from "../../providers/member-cost-service";
 import {SessionService} from "../../providers/session-service";
 import {Session} from "../../models/session.model";
+import {AppStatus} from "../../providers/app-status";
 
 /*
   Generated class for the Options page.
@@ -19,7 +20,9 @@ export class OptionsPage {
 
   session: Session;
 
-  constructor(public navCtrl: NavController, private viewCtrl: ViewController, private toastCtrl: ToastController, private navParams: NavParams, private sessionService: SessionService, private memberCostService: MemberCostService) {
+  constructor(public navCtrl: NavController, private viewCtrl: ViewController, private toastCtrl: ToastController,
+              private navParams: NavParams, private sessionService: SessionService, private memberCostService: MemberCostService,
+              private appStatus: AppStatus) {
     this.sessionService.currentSession.subscribe((session)=>{
       this.session = session;
     });
@@ -38,14 +41,15 @@ export class OptionsPage {
 
   record(){
 
-    this.sessionService.isDirtySession = false;
+    this.appStatus.isDirtySession = false;
 
     let memberCosts = this.navParams.get("memberCosts");
+
     this.memberCostService.createOrUpdate(this.session, memberCosts).subscribe((memberCosts)=>{
 
       this.viewCtrl.dismiss().then(()=>{
 
-        let toast = this.toastCtrl.create({message: 'Collection recorded successfully', duration:2000});
+        let toast = this.toastCtrl.create({message: 'Successfully recorded', duration:2000});
 
         toast.present();
 

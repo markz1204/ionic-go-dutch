@@ -6,6 +6,7 @@ import {SessionService} from "../../providers/session-service";
 import {Session} from "../../models/session.model";
 import {MemberCost} from "../../models/member-cost.model";
 import {MemberCostService} from "../../providers/member-cost-service";
+import {AppStatus} from "../../providers/app-status";
 
 /*
  Generated class for the Session page.
@@ -38,7 +39,7 @@ export class SessionPage {
 
   //Inject navParams is allow to pass memberCosts.
   constructor(private popOverCtrl: PopoverController, private navCtrl: NavController, private navParams: NavParams, private alertCtrl: AlertController,
-              private memberCostService: MemberCostService, private sessionService: SessionService, private events: Events) {
+              private memberCostService: MemberCostService, private sessionService: SessionService, private events: Events, private appStatus: AppStatus) {
 
     this.sessionService.currentSession.subscribe((session) => {
       this.session = session;
@@ -71,7 +72,7 @@ export class SessionPage {
 
   ionViewCanLeave(): boolean {
 
-    if (this.sessionService.isDirtySession) {
+    if(this.appStatus.isDirtySession) {
       let confirm = this.alertCtrl.create({
         title: 'Save changes',
         message: 'You made some changes, do you want to save it?',
@@ -79,8 +80,7 @@ export class SessionPage {
           {
             text: 'No',
             handler: () => {
-
-              this.sessionService.isDirtySession = false;
+              this.appStatus.isDirtySession = false;
               confirm.dismiss().then(() => {
                 this.navCtrl.pop();
               });
@@ -90,7 +90,8 @@ export class SessionPage {
           {
             text: 'Yes',
             handler: () => {
-              this.sessionService.isDirtySession = false;
+
+              this.appStatus.isDirtySession = false;
 
               this.memberCostService.createOrUpdate(this.session, this.memberCosts).subscribe((memberCosts) => {
                 this.navCtrl.pop();
@@ -102,7 +103,8 @@ export class SessionPage {
       confirm.present();
 
       return false;
-    } else {
+
+    }else{
       return true;
     }
   }
@@ -121,15 +123,13 @@ export class SessionPage {
   }
 
   costChanged(costVal) {
-
-    this.sessionService.isDirtySession = true;
-
+    this.appStatus.isDirtySession = true;
     this.cost = costVal;
     this.calculateCost();
   }
 
-  readyOnly() {
-    return ("2" === this.costType);
+  readOnly() {
+    return !this.appStatus.isOrganiser || ("2" === this.costType);
   }
 
   showCost(memberCost: MemberCost) {
@@ -148,7 +148,7 @@ export class SessionPage {
       handler: data => {
         memberCost.costAmount = data[0] || 0;
         this.costType = CostType.ARBITRARY.toString();
-        this.sessionService.isDirtySession = true;
+        this.appStatus.isDirtySession = true;
         this.calculateCost();
       }
     });

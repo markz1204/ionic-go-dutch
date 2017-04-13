@@ -6,6 +6,7 @@ import {Session} from "../../models/session.model";
 import {SessionService} from "../../providers/session-service";
 import {MemberCost} from "../../models/member-cost.model";
 import {MemberCostService} from "../../providers/member-cost-service";
+import {AppStatus} from "../../providers/app-status";
 
 /*
  Generated class for the MemberSearch page.
@@ -25,7 +26,8 @@ export class MemberSearchPage {
 
   showNoMatched: boolean = false;
 
-  constructor(public navCtrl: NavController, private navParams: NavParams, private userService: UserService, private sessionService: SessionService, private memberCostService: MemberCostService) {
+  constructor(public navCtrl: NavController, private navParams: NavParams, private userService: UserService, private sessionService: SessionService,
+              private memberCostService: MemberCostService, private appStatus: AppStatus) {
 
     this.sessionService.currentSession.subscribe((session) => {
       this.currentSession = session;
@@ -60,7 +62,7 @@ export class MemberSearchPage {
     this.sessionService.addMember(this.currentSession.slug, member).subscribe(updated => {
       this.sessionService.currentSessionSubject.next(updated);
 
-      this.sessionService.isDirtySession = true;
+      this.appStatus.isDirtySession = true;
 
     });
 

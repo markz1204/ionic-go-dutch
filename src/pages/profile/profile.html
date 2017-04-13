@@ -13,7 +13,7 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content class="no-scroll" padding>
 
   <ion-list inset>
 
@@ -22,7 +22,7 @@
         <img small src="{{user.picture}}"/>
       </ion-thumbnail>
       <p class="small-font">{{user.firstName}} {{user.lastName}}</p>
-      <qr-code item-right value="{{user.email}}" size="30"></qr-code>
+      <qr-code item-right value="{{user.email}}" size="30" (click)="popupQR()"></qr-code>
     </ion-item>
 
     <form [formGroup]="profileForm">

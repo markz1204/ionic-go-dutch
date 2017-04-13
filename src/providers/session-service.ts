@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {ApiService} from "./api-service";
 import {ReplaySubject} from "rxjs";
 import {Session} from "../models/session.model";
+import {URLSearchParams} from "@angular/http";
 
 /*
  Generated class for the AuthService provider.
@@ -15,11 +16,7 @@ export class SessionService {
   currentSessionSubject = new ReplaySubject<Session>(1);
   currentSession = this.currentSessionSubject.asObservable();
 
-  isDirtySession: Boolean = false;
-
-  constructor(private apiService: ApiService){
-    this.isDirtySession = false
-  }
+  constructor(private apiService: ApiService){}
 
   create(sessionDetails){
 
@@ -37,8 +34,10 @@ export class SessionService {
     return this.apiService.post('/sessions', {session: convertedSessionDetails});
   }
 
-  getAll(){
-    return this.apiService.get(`/sessions`).map(data=>data.sessions);
+  getAll(category){
+    let params: URLSearchParams = new URLSearchParams();
+    params.set("c", category);
+    return this.apiService.get(`/sessions`, params).map(data=>data.sessions);
   }
 
   getSession(slug){
