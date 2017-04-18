@@ -6,8 +6,8 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title text-center text-capitalize>{{session.title}}</ion-title>
+  <ion-navbar class="nav-center">
+    <ion-title text-capitalize>{{session.title}}</ion-title>
     <ion-buttons *ngIf="!readOnly()" end>
       <button ion-button icon-only (click)="presentOptions($event)">
         <ion-icon name="more"></ion-icon>
@@ -28,7 +28,7 @@
           <ion-col col-6>
             <ion-item>
               <ion-label class="small-font">{{costLabels[costType]}} $</ion-label>
-              <ion-input type="number" [readonly]="readOnly()" [(ngModel)]="cost"
+              <ion-input type="number" [readonly]="readOnly() || isArbitrary()" [(ngModel)]="cost"
                          (input)="costChanged($event.target.value)"></ion-input>
             </ion-item>
           </ion-col>
@@ -37,7 +37,7 @@
       </ion-card-header>
       <ion-card-content>
         <div>
-          <ion-segment class="small-font" [(ngModel)]="costType" (ionChange)="segmentChanged()" [disabled]="segmentDisabled()">
+          <ion-segment class="small-font" [(ngModel)]="costType" (ionChange)="segmentChanged()" [disabled]="readOnly()">
             <ion-segment-button *ngFor="let segment of segmentItems" value="{{segment.value}}">
               {{segment.name}}
             </ion-segment-button>
@@ -73,7 +73,7 @@
           </ion-item-sliding>
         </ion-list>
 
-        <ion-list *ngIf="segmentDisabled()">
+        <ion-list *ngIf="readOnly()">
           <ion-item *ngFor="let memberCost of memberCosts">
             <ion-avatar item-left>
               <img src="{{memberCost.member.picture}}">

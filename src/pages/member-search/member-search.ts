@@ -62,10 +62,13 @@ export class MemberSearchPage {
     this.sessionService.addMember(this.currentSession.slug, member).subscribe(updated => {
       this.sessionService.currentSessionSubject.next(updated);
 
-      this.appStatus.isDirtySession = true;
-
+      this.addNewMemberCost(member);
     });
 
+
+  }
+
+  addNewMemberCost(member: User){
     let costAmount = 0;
     let memberCosts = this.navParams.get('memberCosts');
 
@@ -91,7 +94,6 @@ export class MemberSearchPage {
 
     this.memberCostService.createOrUpdate(this.currentSession, memberCosts).subscribe((memberCosts)=>{
     });
-
   }
 
   goBack() {

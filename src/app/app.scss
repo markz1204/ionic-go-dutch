@@ -38,3 +38,20 @@
   font-size: 0.8em;
   color: #d2d2d2;
 }
+
+.toolbar {
+  &.toolbar-md { //material design only
+    &.nav-center {
+      position: relative;
+      .title-md { //material design only
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        z-index: -1; //to avoid button cannot be clicked.
+        text-align: center;
+      }
+    }
+  }
+}

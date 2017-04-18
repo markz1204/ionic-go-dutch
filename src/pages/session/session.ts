@@ -75,7 +75,7 @@ export class SessionPage {
     if(this.appStatus.isDirtySession) {
       let confirm = this.alertCtrl.create({
         title: 'Save changes',
-        message: 'You made some changes, do you want to save it?',
+        message: 'You made cost changes, do you want to save it?',
         buttons: [
           {
             text: 'No',
@@ -129,11 +129,11 @@ export class SessionPage {
   }
 
   readOnly() {
-    return !this.appStatus.isOrganiser || ("2" === this.costType);
+    return !this.appStatus.isOrganiser;
   }
 
-  segmentDisabled(){
-    return !this.appStatus.isOrganiser;
+  isArbitrary(){
+    return "2" === this.costType.toString();
   }
 
   showCost(memberCost: MemberCost) {

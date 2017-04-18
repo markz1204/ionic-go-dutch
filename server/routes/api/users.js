@@ -84,7 +84,7 @@ router.get('/current', auth.required, function(req, res, next){
   return User.findOne({email: token.email}).then(function(user){
     if(!user){ return res.sendStatus(401); }
 
-    return res.json({user: user.toProfileJSON()});
+    return res.json({user: user.toAuthJSON(auth.getTokenFromHeader(req))});
   }).catch(next);
 });
 
