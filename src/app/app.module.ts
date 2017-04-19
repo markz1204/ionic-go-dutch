@@ -22,6 +22,7 @@ import {QRCodeModule} from "../appmodule/angular2-qrcode";
 import {EqualValidatorDirective} from "../directives/equal.directive";
 import {AppStatus} from "../providers/app-status";
 import {QrcodePage} from "../pages/qrcode/qrcode";
+import {Facebook} from "ionic-native";
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import {QrcodePage} from "../pages/qrcode/qrcode";
               SessionService,
               ApiService,
               CookieService,
-              AppStatus]
+              AppStatus,
+              Facebook]
 })
 export class AppModule {}

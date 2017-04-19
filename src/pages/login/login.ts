@@ -5,13 +5,8 @@ import {RegisterPage} from "../register/register";
 import {TabsPage} from "../tabs/tabs";
 import {FormGroup, FormBuilder} from "@angular/forms";
 import {EmailValidator} from "../../validators/EmailValidator";
+import {Facebook, FacebookLoginResponse} from "ionic-native";
 
-/*
-  Generated class for the Login page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
@@ -35,7 +30,7 @@ export class LoginPage {
 
   public login() {
 
-    if(this.loginForm.valid) {
+    if (this.loginForm.valid) {
       this.showLoading();
       this.auth.login(this.loginForm.value).subscribe(isAuthenticated => {
           if (isAuthenticated) {
@@ -49,6 +44,22 @@ export class LoginPage {
     }
   }
 
+  fbLogin() {
+
+    this.showLoading();
+
+    Facebook.login(['public_profile', 'email'])
+      .then((res: FacebookLoginResponse) => {
+        if (res.authResponse.accessToken) {
+          this.auth.fbLogin(res.authResponse.accessToken).subscribe(isAuthenticated => {
+            this.loading.dismiss();
+            this.navCtrl.setRoot(TabsPage);
+          })
+        }
+      })
+      .catch(e => this.showError(e));
+  }
+
   showLoading() {
     this.loading = this.loadingCtrl.create({
       content: 'Please wait...'
@@ -57,13 +68,16 @@ export class LoginPage {
   }
 
   showError(error) {
-    setTimeout(() => {
-      this.loading.dismiss();
-    });
+    this.loading.dismiss();
+
+    //If cancel facebook login, it returned as error with this code.
+    if("4201" === error.errorCode){
+      return;
+    }
 
     let alert = this.alertCtrl.create({
       title: 'Fail',
-      subTitle: error.message,
+      subTitle: error.message || error.errorMessage || 'Error happened, try again later',
       buttons: ['OK']
     });
     alert.present();

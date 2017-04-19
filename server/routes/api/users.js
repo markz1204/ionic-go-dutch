@@ -88,6 +88,51 @@ router.get('/current', auth.required, function(req, res, next){
   }).catch(next);
 });
 
+router.post('/fblogin', function(req, res, next) {
+
+  var loginOptions = {
+    method: 'POST',
+    url: config.auth0_social_login_url,
+    headers: { 'content-type': 'application/json' },
+    body: {
+      client_id: config.auth0_client_id,
+      access_token: req.body.at,
+      connection: 'facebook',
+      scope: 'openid profile'
+    },
+    json: true
+  };
+
+  return request(loginOptions, function (error, response, body) {
+    if (200 === response.statusCode) {
+
+      var token = jwt.decode(body.id_token);
+
+      User.findOne({email: token.email}).then(function(user){
+
+        if(!user){
+          var user = new User();
+          user.email = token.email;
+          user.firstName = token.given_name;
+          user.lastName = token.family_name;
+          user.picture = token.picture;
+          user.save().then(function(){
+            //res.cookie('gd-token', body.id_token);
+            return res.json({user: user.toAuthJSON(body.id_token)});
+          }).catch(next);
+
+        }else {
+          //res.cookie('gd-token', body.id_token);
+          return res.json({user: user.toAuthJSON(body.id_token)});
+        }
+      });
+    }else{
+      return res.status(401).json({error: {statusCode: 401, message: 'email or password is invalid'}});
+    }
+  });
+
+});
+
 router.post('/login', function(req, res, next){
   if(!req.body.user.email){
     return res.status(422).json({errors: {email: "can't be blank"}});

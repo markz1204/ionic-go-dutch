@@ -5,12 +5,6 @@ import "rxjs/add/operator/catch";
 import {ApiService} from "./api-service";
 import {URLSearchParams} from "@angular/http";
 
-/*
- Generated class for the AuthService provider.
-
- See https://angular.io/docs/ts/latest/guide/dependency-injection.html
- for more info on providers and Angular 2 DI.
- */
 @Injectable()
 export class UserService {
 
@@ -33,6 +27,10 @@ export class UserService {
 
   login(credentials): Observable<any>{
     return this.apiService.post('/users/login', {user: credentials});
+  }
+
+  fbLogin(accessToken): Observable<any>{
+    return this.apiService.post('/users/fblogin', {at: accessToken});
   }
 
   update(details): Observable<any>{

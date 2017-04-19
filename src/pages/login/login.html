@@ -14,7 +14,7 @@
 
 <ion-content class="login-content no-scroll" padding>
 
-  <div>
+  <ion-list>
     <form [formGroup]="loginForm">
       <ion-row>
         <ion-col>
@@ -45,5 +45,12 @@
       </ion-row>
     </form>
     <button ion-button class="register-btn" block clear (click)="createAccount()">Create New Account</button>
-  </div>
+    <ion-label text-center clear>Or</ion-label>
+    <div text-center>
+      <button ion-button icon-left text-lowercase (click)="fbLogin()">
+        <ion-icon name="logo-facebook"></ion-icon>
+        login with facebook
+      </button>
+    </div>
+  </ion-list>
 </ion-content>

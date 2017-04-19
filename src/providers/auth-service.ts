@@ -4,6 +4,7 @@ import {User} from "../models/user.model";
 import {UserService} from "./user-service";
 import {JwtService} from "./jwt-service";
 import {BehaviorSubject, ReplaySubject} from "rxjs";
+import {Facebook} from "ionic-native";
 
 /*
   Generated class for the AuthService provider.
@@ -37,6 +38,19 @@ export class AuthService {
           }
          );
     }
+  }
+
+  public fbLogin(accessToken: string): Observable<boolean>{
+    return this.userService.fbLogin(accessToken).map(
+      data => {
+        this.setAuth(data.user);
+        return true;
+      },
+
+      error =>{
+        return false;
+      }
+    );
   }
 
   public register(credentials) : Observable<any> {
@@ -95,7 +109,15 @@ export class AuthService {
 
   public logout() {
     return Observable.create(observer => {
+
+      Facebook.getLoginStatus().then((result)=>{
+        if("connected" === result.status) {
+          Facebook.logout();
+        }
+      });
+
       this.purgeAuth();
+
       observer.next(true);
       observer.complete();
     });
