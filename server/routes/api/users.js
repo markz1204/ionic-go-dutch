@@ -167,7 +167,7 @@ router.post('/login', function(req, res, next){
         return res.json({user: user.toAuthJSON(body.id_token)});
       });
     }else{
-      return res.status(401).json({error: {statusCode: 401, message: 'email or password is invalid'}});
+      return res.status(401).json({error: {statusCode: 401, message: 'Email or password is invalid'}});
     }
   });
 });

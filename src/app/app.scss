@@ -16,7 +16,7 @@
 // automatically applied to the <body> element in the app.
 .no-scroll .scroll-content,
 .no-scroll-alert .alert-message{
-  overflow: hidden;
+  overflow-y: hidden;
 }
 
 .profile-qr img{
